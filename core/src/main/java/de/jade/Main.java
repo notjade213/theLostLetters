@@ -1,18 +1,15 @@
 package de.jade;
 
-import com.badlogic.gdx.ApplicationListener;
+
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.jade.player.CurrentPlayerStatus;
+import de.jade.screen.TitleScreen;
 
 
 public class Main extends Game implements Telegraph {
@@ -24,10 +21,11 @@ public class Main extends Game implements Telegraph {
     public Batch batch;
 
     // Managers
-    private AssetManager assetManager;
+    public AssetManager assetManager;
 
     // Misc
     private final CurrentPlayerStatus status;
+    public static OrthographicCamera camera;
 
     public Main() {
         status = new CurrentPlayerStatus();
@@ -35,17 +33,34 @@ public class Main extends Game implements Telegraph {
 
     @Override
     public void create () {
+        assetManager = new AssetManager();
+        assetManager.load(Assets.HUD_FONT);
+        assetManager.load(Assets.TITLE_BACKGROUND);
+        assetManager.load(Assets.LOGO);
+        assetManager.load(Assets.EXIT_BUTTON);
+        assetManager.load(Assets.START_BUTTON);
+        assetManager.finishLoading();
 
+        batch = new SpriteBatch();
+
+        camera = new OrthographicCamera();
+
+        //setScreen(new StartScreen(this));
         setScreen(new TitleScreen(this));
+
     }
 
     @Override
     public void render () {
+        super.render();
 
     }
 
     @Override
     public void dispose () {
+        super.dispose();
+        batch.dispose();
+        assetManager.dispose();
     }
 
     // Sets the state of the game to what it was when it first began, set to "r" for testing
@@ -77,5 +92,13 @@ public class Main extends Game implements Telegraph {
     public boolean handleMessage(Telegram msg) {
 
         return false;
+    }
+
+    public AssetManager getAssetManager() {
+        return assetManager;
+    }
+
+    public Batch getBatch() {
+        return batch;
     }
 }
