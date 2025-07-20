@@ -1,36 +1,42 @@
 package de.jade;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.utils.ScreenUtils;
+import de.jade.player.CurrentPlayerStatus;
 
-public class Main extends InputAdapter implements ApplicationListener {
 
+public class Main extends Game implements Telegraph {
+
+    // Application Vars
+    public static final String GAME_TITLE = "The Lost Letters | Version 1.0";
+
+    // Batches
+    public Batch batch;
+
+    // Managers
+    private AssetManager assetManager;
+
+    // Misc
+    private final CurrentPlayerStatus status;
+
+    public Main() {
+        status = new CurrentPlayerStatus();
+    }
 
     @Override
     public void create () {
 
+        setScreen(new TitleScreen(this));
     }
 
     @Override
@@ -40,6 +46,13 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void dispose () {
+    }
+
+    // Sets the state of the game to what it was when it first began, set to "r" for testing
+    public void reset() {
+        status.reset();
+        getScreen().dispose();
+        setScreen(new TitleScreen(this));
     }
 
     @Override
@@ -57,5 +70,12 @@ public class Main extends InputAdapter implements ApplicationListener {
 
     @Override
     public void pause() {
+    }
+
+
+    @Override
+    public boolean handleMessage(Telegram msg) {
+
+        return false;
     }
 }
