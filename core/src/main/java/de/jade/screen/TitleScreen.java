@@ -52,7 +52,7 @@ public class TitleScreen extends AbstractScreen {
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(final InputEvent event, final float x, final float y) {
-                game.setScreen(new GameScreen(game, Main.camera));
+                game.setScreen(new GameScreen(game));
             }
 
             @Override

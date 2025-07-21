@@ -48,7 +48,7 @@ public class Main extends Game implements Telegraph {
 
         camera = new OrthographicCamera();
 
-        setScreen(new GameScreen(this, camera));
+        setScreen(new GameScreen(this));
         //setScreen(new StartScreen(this));
 
     }
@@ -70,7 +70,7 @@ public class Main extends Game implements Telegraph {
     public void reset() {
         status.reset();
         getScreen().dispose();
-        setScreen(new GameScreen(this, camera));
+        setScreen(new GameScreen(this));
     }
 
     @Override
