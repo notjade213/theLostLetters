@@ -48,8 +48,8 @@ public class Main extends Game implements Telegraph {
 
         camera = new OrthographicCamera();
 
-        //setScreen(new GameScreen(this, camera));
-        setScreen(new StartScreen(this));
+        setScreen(new GameScreen(this, camera));
+        //setScreen(new StartScreen(this));
 
     }
 
