@@ -1,6 +1,8 @@
 package de.jade.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,7 +13,9 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import de.jade.Assets;
 import de.jade.Main;
 
-public class StartScreen extends AbstractScreen implements InputProcessor {
+import static com.badlogic.gdx.utils.Align.center;
+
+public class StartScreen extends AbstractScreen{
     private static final String START_MESSAGE = "Press any Button to Continue";
 
     private final Stage stage;
@@ -26,13 +30,13 @@ public class StartScreen extends AbstractScreen implements InputProcessor {
         style.fontColor = Color.WHITE;
         style.font = game.getAssetManager().get(Assets.HUD_FONT);
 
-        Label titleLabel = new Label("The Lost Letters", style);
-        titleLabel.setFontScale(10f);
+        Label titleLabel = new Label("The Wild Gooners", style);
+        titleLabel.setFontScale(5f);
         table.add(titleLabel).padBottom(60.0f).colspan(2).row();
 
         Label messageLabel = new Label(START_MESSAGE, style);
-        messageLabel.setFontScale(3f);
-        table.add(messageLabel).align(5).row();
+        messageLabel.setFontScale(2f);
+        table.add(messageLabel).align(center).row();
 
 
         stage = new Stage(new ScreenViewport());
@@ -41,16 +45,22 @@ public class StartScreen extends AbstractScreen implements InputProcessor {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean keyDown(int keypressed) {
+                game.setScreen(new TitleScreen(game));
+                return true;
+            }
+        });
     }
 
     @Override
     public void render(float v) {
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(0,0,0,10f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.getBatch().begin();
-        game.getBatch().draw(game.getAssetManager().get(Assets.TITLE_BACKGROUND), 0 , 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //game.getBatch().draw(game.getAssetManager().get(Assets.TITLE_BACKGROUND), 0 , 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         game.getBatch().end();
 
         stage.act(v);
@@ -75,50 +85,5 @@ public class StartScreen extends AbstractScreen implements InputProcessor {
     @Override
     public void dispose() {
 
-    }
-
-    @Override
-    public boolean keyDown(int i) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int i) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char c) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int i, int i1, int i2, int i3) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int i, int i1, int i2, int i3) {
-        return false;
-    }
-
-    @Override
-    public boolean touchCancelled(int i, int i1, int i2, int i3) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int i, int i1, int i2) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int i, int i1) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(float v, float v1) {
-        return false;
     }
 }

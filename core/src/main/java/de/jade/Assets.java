@@ -13,7 +13,7 @@ public class Assets {
     private Assets() {
     };
 
-    public static final AssetDescriptor<BitmapFont> HUD_FONT = new AssetDescriptor<BitmapFont>("fonts" + File.separator + "last-ninja.fnt",
+    public static final AssetDescriptor<BitmapFont> HUD_FONT = new AssetDescriptor<BitmapFont>("fonts" + File.separator + "yoster.fnt",
         BitmapFont.class);
 
     public static final AssetDescriptor<Texture> TITLE_BACKGROUND = new AssetDescriptor<Texture>("sprites/ui" + File.separator + "TheLostLettersTitleScreen.png",
@@ -26,6 +26,9 @@ public class Assets {
         Texture.class);
 
     public static final AssetDescriptor<Texture> EXIT_BUTTON = new AssetDescriptor<Texture>("sprites/ui" + File.separator + "Exitbutton.png",
+        Texture.class);
+
+    public static final AssetDescriptor<Texture> OBANANA = new AssetDescriptor<Texture>("sprites/characters" + File.separator + "ObamaSpriteSheet.png",
         Texture.class);
 
     //public static final AssetDescriptor<TextureAtlas> = new AssetDescriptor<TextureAtlas>("ObamaSpriteSheet.png")

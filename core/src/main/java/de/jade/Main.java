@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.jade.player.CurrentPlayerStatus;
+import de.jade.screen.GameScreen;
+import de.jade.screen.StartScreen;
 import de.jade.screen.TitleScreen;
 
 
@@ -39,14 +41,15 @@ public class Main extends Game implements Telegraph {
         assetManager.load(Assets.LOGO);
         assetManager.load(Assets.EXIT_BUTTON);
         assetManager.load(Assets.START_BUTTON);
+        assetManager.load(Assets.OBANANA);
         assetManager.finishLoading();
 
         batch = new SpriteBatch();
 
         camera = new OrthographicCamera();
 
-        //setScreen(new StartScreen(this));
-        setScreen(new TitleScreen(this));
+        //setScreen(new GameScreen(this, camera));
+        setScreen(new StartScreen(this));
 
     }
 
@@ -67,7 +70,7 @@ public class Main extends Game implements Telegraph {
     public void reset() {
         status.reset();
         getScreen().dispose();
-        setScreen(new TitleScreen(this));
+        setScreen(new GameScreen(this, camera));
     }
 
     @Override

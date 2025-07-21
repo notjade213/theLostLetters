@@ -7,11 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
@@ -28,11 +25,12 @@ public class TitleScreen extends AbstractScreen {
     private static final String OPTION_THREE = "Settings";
 
     private final Stage stage;
+    public static Table table;
 
     public TitleScreen(Main game) {
         super(game);
 
-        final Table table = new Table();
+        table = new Table();
 
         // Declaring Variables, Label only used for Title
         Label.LabelStyle style = new Label.LabelStyle();
@@ -43,22 +41,18 @@ public class TitleScreen extends AbstractScreen {
         Drawable drawableTitle = new SpriteDrawable(spriteTitle);
         Image imageTitle = new Image(drawableTitle);
 
-        // Creating buttonStyle + buttonFont
+        // Creating start Button using Image Button
         Sprite spriteSB = new Sprite(game.getAssetManager().get(Assets.START_BUTTON));
+        spriteSB.setSize(400,400);
         Drawable drawableSB = new SpriteDrawable(spriteSB);
 
-        TextButton.TextButtonStyle startbuttonStyle = new TextButton.TextButtonStyle();
-        startbuttonStyle.font = new BitmapFont();
-        startbuttonStyle.up = drawableSB;
+        ImageButton startButton = new ImageButton(drawableSB);
 
-
-        // Creating Start Button using the Text Button
-        TextButton startButton = new TextButton("", startbuttonStyle);
+        // Click Listener for start Button
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(final InputEvent event, final float x, final float y) {
-                //game.setScreen(new GameScreen(Main.camera));
-                game.setScreen(new StartScreen(game));
+                game.setScreen(new GameScreen(game, Main.camera));
             }
 
             @Override
@@ -68,15 +62,14 @@ public class TitleScreen extends AbstractScreen {
         });
 
 
-        // Creating Exit Button using the Text Button
+        // Creating Exit Button as Image Button
         Sprite spriteEB = new Sprite(game.getAssetManager().get(Assets.EXIT_BUTTON));
+        spriteEB.setSize(350,350);
         Drawable drawableEB = new SpriteDrawable(spriteEB);
 
-        TextButton.TextButtonStyle exitbuttonStyle = new TextButton.TextButtonStyle();
-        exitbuttonStyle.font = new BitmapFont();
-        exitbuttonStyle.up = drawableEB;
+        ImageButton exitButton = new ImageButton(drawableEB);
 
-        TextButton exitButton = new TextButton("", exitbuttonStyle);
+        // Click Listener for exit Button
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(final InputEvent event, final float x, final float y) {
@@ -90,8 +83,8 @@ public class TitleScreen extends AbstractScreen {
         });
 
         table.add(imageTitle).size(1000).row();
-        table.add(startButton).size(500).row();
-        table.add(exitButton).size(500).row();
+        table.add(startButton).align(left).row();
+        table.add(exitButton).align(left).row();
         table.align(topLeft).pad(50f);
         table.setFillParent(true);
 
@@ -137,5 +130,10 @@ public class TitleScreen extends AbstractScreen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    // Used for Debuging Game Screen
+    public static Table getTable() {
+        return table;
     }
 }
