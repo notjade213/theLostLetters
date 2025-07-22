@@ -1,6 +1,7 @@
 package de.jade.screen;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import de.jade.Assets;
 import de.jade.Main;
 import de.jade.helper.Constans;
 import de.jade.player.Obanana;
@@ -32,6 +34,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     private final Viewport gamePort;
     private ObananaInput inputManager;
+    private Music tutorialTheme;
 
     // Map
     private final TmxMapLoader maploader;
@@ -43,6 +46,9 @@ public class GameScreen extends InputAdapter implements Screen {
     public GameScreen(Main main) {
         inputManager = new ObananaInput();
         Gdx.input.setInputProcessor(new ObananaInput());
+
+        tutorialTheme = main.assetManager.get(Assets.TUTORIAL_THEME);
+        tutorialTheme.setLooping(true);
 
         this.camera = new OrthographicCamera();
         gamePort = new FitViewport(main.camera.viewportWidth, Main.camera.viewportHeight, camera);
@@ -106,8 +112,8 @@ public class GameScreen extends InputAdapter implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) camera.position.y -= speed * Gdx.graphics.getDeltaTime();
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) camera.position.y += speed * Gdx.graphics.getDeltaTime();
 
-//        camera.position.x = player.b2body.getPosition().x;
-//        camera.position.y = player.b2body.getPosition().y + 550f; // 550f
+        camera.position.x = player.b2body.getPosition().x;
+        camera.position.y = player.b2body.getPosition().y + 550f; // 550f
 
         world.step(1 / 60f, 6,2);
         cameraUpdate();
@@ -125,6 +131,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public void show() {
+        tutorialTheme.play();
         camera.setToOrtho(false);
     }
 
@@ -152,7 +159,6 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
@@ -162,7 +168,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public void hide() {
-
+        tutorialTheme.stop();
     }
 
     @Override
@@ -172,6 +178,7 @@ public class GameScreen extends InputAdapter implements Screen {
         box2DDebugRenderer.dispose();
         world.dispose();
         batch.dispose();
+        tutorialTheme.dispose();
     }
 
     public Obanana getPlayer() {

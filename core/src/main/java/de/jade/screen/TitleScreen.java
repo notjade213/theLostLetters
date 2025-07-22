@@ -1,6 +1,7 @@
 package de.jade.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -24,12 +25,15 @@ public class TitleScreen extends AbstractScreen {
     private static final String OPTION_THREE = "Settings";
 
     private final Stage stage;
+    private Music menuTheme;
     public static Table table;
 
     public TitleScreen(Main game) {
         super(game);
 
         table = new Table();
+        menuTheme = game.assetManager.get(Assets.MENU_THEME);
+        menuTheme.setLooping(true);
 
         // Declaring Variables, Label only used for Title
         Label.LabelStyle style = new Label.LabelStyle();
@@ -94,6 +98,8 @@ public class TitleScreen extends AbstractScreen {
 
     @Override
     public void show() {
+        menuTheme.play();
+
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -129,6 +135,7 @@ public class TitleScreen extends AbstractScreen {
     @Override
     public void dispose() {
         stage.dispose();
+        menuTheme.dispose();
     }
 
     // Used for Debuging Game Screen

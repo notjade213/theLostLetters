@@ -41,6 +41,8 @@ public class Main extends Game implements Telegraph {
         assetManager.load(Assets.EXIT_BUTTON);
         assetManager.load(Assets.START_BUTTON);
         assetManager.load(Assets.OBANANA);
+        assetManager.load(Assets.TUTORIAL_THEME);
+        assetManager.load(Assets.MENU_THEME);
         assetManager.finishLoading();
         batch = new SpriteBatch();
         camera = new OrthographicCamera();

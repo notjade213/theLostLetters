@@ -46,7 +46,7 @@ public class Obanana extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(100f, 100f);
+        shape.setAsBox(1f / Constans.PPM, 1f / Constans.PPM);
 
         fdef.shape = shape;
        // b2body.setLinearDamping(0.5f);

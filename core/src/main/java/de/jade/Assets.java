@@ -2,6 +2,7 @@ package de.jade;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -28,4 +29,10 @@ public class Assets {
 
     public static final AssetDescriptor<TextureAtlas> OBANANA = new AssetDescriptor<TextureAtlas>("sprites/characters" + File.separator + "ObamaSpritesheet.atlas",
     TextureAtlas.class);
+
+    public static final AssetDescriptor<Music> TUTORIAL_THEME = new AssetDescriptor<Music>("sfx" + File.separator + "TutorialTheme.mp3",
+        Music.class);
+
+    public static final AssetDescriptor<Music> MENU_THEME = new AssetDescriptor<Music>("sfx" + File.separator + "MenuTheme.mp3",
+        Music.class);
 }
