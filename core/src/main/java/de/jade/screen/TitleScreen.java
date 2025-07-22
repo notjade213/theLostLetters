@@ -2,7 +2,6 @@ package de.jade.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -35,14 +34,14 @@ public class TitleScreen extends AbstractScreen {
         // Declaring Variables, Label only used for Title
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = Color.WHITE;
-        style.font = game.getAssetManager().get(Assets.HUD_FONT);
+        style.font = game.assetManager.get(Assets.HUD_FONT);
 
-        Sprite spriteTitle = new Sprite(game.getAssetManager().get(Assets.LOGO));
+        Sprite spriteTitle = new Sprite(game.assetManager.get(Assets.LOGO));
         Drawable drawableTitle = new SpriteDrawable(spriteTitle);
         Image imageTitle = new Image(drawableTitle);
 
         // Creating start Button using Image Button
-        Sprite spriteSB = new Sprite(game.getAssetManager().get(Assets.START_BUTTON));
+        Sprite spriteSB = new Sprite(game.assetManager.get(Assets.START_BUTTON));
         spriteSB.setSize(400,400);
         Drawable drawableSB = new SpriteDrawable(spriteSB);
 
@@ -63,7 +62,7 @@ public class TitleScreen extends AbstractScreen {
 
 
         // Creating Exit Button as Image Button
-        Sprite spriteEB = new Sprite(game.getAssetManager().get(Assets.EXIT_BUTTON));
+        Sprite spriteEB = new Sprite(game.assetManager.get(Assets.EXIT_BUTTON));
         spriteEB.setSize(350,350);
         Drawable drawableEB = new SpriteDrawable(spriteEB);
 
@@ -104,7 +103,7 @@ public class TitleScreen extends AbstractScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.getBatch().begin();
-        game.getBatch().draw(game.getAssetManager().get(Assets.TITLE_BACKGROUND), 0 , 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.getBatch().draw(game.assetManager.get(Assets.TITLE_BACKGROUND), 0 , 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //game.getBatch().draw(game.getAssetsManager().get(Assets.LOGO), 0 , 0, 100,100);
         game.getBatch().end();
 

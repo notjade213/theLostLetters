@@ -1,0 +1,13 @@
+ObamaSpritesheet.png
+size: 437, 68
+name: obananaIdle
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+pma: false
+obananaStand
+xy: 0, 0
+size: 32, 32
+offset: 0, 0
+index: -1
+

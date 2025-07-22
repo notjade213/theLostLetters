@@ -1,15 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="29" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="34">
  <tileset firstgid="1" source="tileset.tsx"/>
  <tileset firstgid="17" source="flowerytileset.tsx"/>
- <layer id="2" name="SolidGround" width="100" height="20">
+ <tileset firstgid="22" source="PitSign.tsx"/>
+ <imagelayer id="7" name="ColorBack" repeatx="1" repeaty="1">
+  <image source="ColorBack.png" width="240" height="135"/>
+ </imagelayer>
+ <imagelayer id="5" name="Background4" offsetx="0" offsety="375" parallaxx="0.1" repeatx="1">
+  <image source="BackgroundLayer3.png" width="240" height="135"/>
+ </imagelayer>
+ <imagelayer id="6" name="Background3" offsetx="0" offsety="400" parallaxx="0.25" repeatx="1">
+  <image source="BackgroundLayerYes.png" width="240" height="135"/>
+ </imagelayer>
+ <imagelayer id="4" name="Background2" offsetx="0" offsety="475" parallaxx="0.5" repeatx="1">
+  <image source="BackgroundLayer2.png" width="240" height="135"/>
+ </imagelayer>
+ <imagelayer id="3" name="Background1" offsetx="0" offsety="500" parallaxx="0.75" repeatx="1">
+  <image source="BackgroundLayer1.png" width="240" height="500"/>
+ </imagelayer>
+ <layer id="2" name="SolidGround" width="100" height="29">
   <data encoding="base64" compression="zlib">
-   eJztVwtOwzAMDSAYjA1t/dxnR+lRehSOsqNwFBwWU896adMkYtHIk57aRqkdvxenmzEVCMdMcV6IHytYgVH9KAvVj7JQ/SgL1Y+yUP0oC7n8OBhzeiNWP9KQyw+LQ/UjGTn9sLCebBRR31Rg5PYDxUMeZU57N/gLP/RY7pz3hP/uR+euvbvvE+O1ie/n0KZZiHcrP7S+SOs98UmQnseEfMNz7MsOqdrwGqjWT1+8W/mhtUZ6b4kPgvQ80v76is25M5MWMQjVxvYh7zd3Hc3lOuxAvPZS189cO9a4+e2KnGuAzgnS/kQenCVp7CznID/W5uae0FrE9EuINlZTX193bg2t21McT85/J24Uc0Hm0Xs/pFfn/GhVvE7c99PYlQfyHj2jM1PuJV5fA+bx+7bm15l1yx7leLLOR4P/D8r69BrkusG839wyz3baI1e1SRzdb22Or/2gOkd9xiHuPfUjP+T5pfsFnam+7xj3hfZC1s49utaPkJpDKNcWqOUoiWoLoa7f6TVo/aU/jeolrdPcuWl71ecF6g9GqB8xGpREX/1L51WsH3NeqLMBfs+X/PgGg8EztQ==
+   eJztl2EOgjAMRqdGUUTjkTgaR+Noln9N026MbVLi95IvcQak6ytLDAG05EZ5ZwS0BT58AR++gA9fwIcv4MMXnxDGBwU+/PCBD3csTjoR7b0B+6E52rsmAAA4Gi/KhYXWU8nvXSvUVIqHGjRkr7V+95QTS1/oYyi5uRIeatCg3o/kYOah72Z+TQ0ffB5lL1rNauy91nzw65+UTqRFXVvOmho+BuOztq7Bsud7sOvWnsn3eQ7t/g/y52zppfRB+5zkGafFmseUD/m+aGdqbLY0FzV8WHXkhte2spcTj7a3NbH2n/Ih13IeYrNluajhw6rjKPm1j5iLo/tI4dFHql/wAR9reqmRez98tPWRC3zAB3zYwAd8wIeNRx+t8ezjH/kCMIYw6A==
   </data>
  </layer>
- <layer id="1" name="SoftDeco" width="100" height="20">
+ <objectgroup id="8" name="SolidGround">
+  <object id="7" x="1" y="577" width="446" height="351"/>
+  <object id="8" x="449" y="576" width="127" height="30"/>
+  <object id="9" x="578" y="511" width="126" height="70"/>
+  <object id="10" x="702" y="576" width="389" height="52"/>
+  <object id="11" x="800" y="448" width="194" height="64"/>
+  <object id="12" x="1090" y="575" width="157" height="64"/>
+  <object id="13" x="1217" y="543" width="30" height="31"/>
+  <object id="14" x="1089" y="415" width="158" height="97"/>
+  <object id="15" x="1088" y="511" width="32" height="33"/>
+  <object id="16" x="1247" y="542" width="319" height="329"/>
+  <object id="17" x="1633" y="479" width="30" height="430"/>
+  <object id="18" x="1728" y="415" width="32" height="505"/>
+  <object id="19" x="1856" y="479" width="31" height="413"/>
+  <object id="20" x="1985" y="543" width="30" height="357"/>
+  <object id="21" x="2112" y="543" width="223" height="352"/>
+  <object id="22" x="2432" y="607" width="31" height="257"/>
+  <object id="23" x="2465" y="576" width="32" height="35"/>
+  <object id="24" x="2497" y="543" width="32" height="34"/>
+  <object id="25" x="2528" y="512" width="33" height="34"/>
+  <object id="26" x="2560" y="480" width="158" height="33"/>
+  <object id="27" x="2687" y="513" width="32" height="354"/>
+  <object id="28" x="2784" y="415" width="33" height="450"/>
+  <object id="29" x="2944" y="479" width="255" height="375"/>
+  <object id="30" x="3040" y="286" width="160" height="34"/>
+  <object id="31" x="2880" y="253" width="162" height="34"/>
+  <object id="32" x="2848" y="223" width="32" height="33"/>
+  <object id="33" x="2816" y="191" width="33" height="33"/>
+ </objectgroup>
+ <layer id="1" name="SoftDeco" width="100" height="29">
   <data encoding="base64" compression="zlib">
-   eJztldERwyAIhrNCNe7TURzFUTJaR6np4ZVyajF4CXfhe0nPIhB+IMti1HhcnYDxg+mhC9NDF6aHLkwPXZgeujA9dGF66ML00MVsPUxfGWfoQc9MszZ312OFZ4DfQejPC+/PqI374+8qPWh9pbVmxItSH9LalBzyu24tf5rno0bur5fkfqnFEbi12eew9Bs8E8SONX/ZPjmw3c8c2PuBmCNI98QMaC2OzAunNmv/v09MDz2lqfc5s9rDQw8VcB3C9yyO5FTbmbiXSn6uYte637DbsD8OVGecQ+jbJY7fhh5P6n8GvR0l2V+Y3lygWBHH1DQfZ4B3FP2WUpzge09nlcvd9NAG3Z9cPd5JZRUw
+   eJztlWEOgyAMRr3CQHeeHYWjeBSPtqNMl5KxBhCt0S/xe3+2MGxZX4tdR3I8rj4A+YM+sKAPLOgDC/rAgj6woA8s6AML+sDiaB/0a+MMH3qNzsrc3Ucvn4N8H4zxvPH5I2rjVuJd5UPX11rrhnzBGsNam3iG+b9OpXjI85Fj7q+35flYiz201maZw9hv8jlK7pCLN+8fnexd1pzs9xtybsF6TxyBrsWeeWmpTV//7ZvTS08h9X7LrNbw0kORtA7Dby1sOVPuzkx7KZ7PZfaVni/sm9J4azwzOVxmbUH3g1N10sT9BR8vHf8IaneU5f5Kqc1FkiukOZHm4wzSO0q/SzXO8L7Xs9rK3Xygoe9P+sCCPrCgDyzoAwv6wII+sKAPLOiDEDsfsQIVvg==
   </data>
  </layer>
 </map>

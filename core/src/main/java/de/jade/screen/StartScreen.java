@@ -1,9 +1,7 @@
 package de.jade.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -28,7 +26,7 @@ public class StartScreen extends AbstractScreen{
 
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = Color.WHITE;
-        style.font = game.getAssetManager().get(Assets.HUD_FONT);
+        style.font = game.assetManager.get(Assets.HUD_FONT);
 
         Label titleLabel = new Label("The Wild Gooners", style);
         titleLabel.setFontScale(5f);

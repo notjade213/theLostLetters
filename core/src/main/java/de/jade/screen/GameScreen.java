@@ -3,47 +3,49 @@ package de.jade.screen;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import de.jade.Assets;
+
 import de.jade.Main;
 import de.jade.helper.Constans;
 import de.jade.player.Obanana;
-
-import static de.jade.helper.Constans.PPM;
+import de.jade.player.ObananaInput;
 
 public class GameScreen extends InputAdapter implements Screen {
 
-    private Main main;
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-    private Stage stage;
-    private World world;
-    private Box2DDebugRenderer box2DDebugRenderer;
-    private Obanana player;
-    private Viewport gamePort;
+    private final Main main;
+    private final OrthographicCamera camera;
+    private final SpriteBatch batch;
+
+    public final Obanana player;
+
+    private final Viewport gamePort;
+    private ObananaInput inputManager;
 
     // Map
-    private TmxMapLoader maploader;
-    private TiledMap map;
-    private OrthogonalTiledMapRenderer renderer;
+    private final TmxMapLoader maploader;
+    private final TiledMap map;
+    private final OrthogonalTiledMapRenderer renderer;
+    private final World world;
+    private final Box2DDebugRenderer box2DDebugRenderer;
 
     public GameScreen(Main main) {
+        inputManager = new ObananaInput();
+        Gdx.input.setInputProcessor(new ObananaInput());
+
         this.camera = new OrthographicCamera();
-        gamePort = new FitViewport(Main.camera.viewportWidth, Main.camera.viewportHeight, camera);
+        gamePort = new FitViewport(main.camera.viewportWidth, Main.camera.viewportHeight, camera);
 
         camera.position.set(gamePort.getScreenWidth() / 2f,gamePort.getScreenHeight() / 2f, 0f); // 280f + 170f
         camera.zoom = 1f; // 0.008f
@@ -51,41 +53,65 @@ public class GameScreen extends InputAdapter implements Screen {
 
         maploader = new TmxMapLoader();
         map = maploader.load("maps/Tutorial.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map, 140 / PPM); // 140 / PPM
+        renderer = new OrthogonalTiledMapRenderer(map, 140 / Constans.PPM); // 140 / PPM
 
         // Box2D variables
-        this.world = new World(new Vector2(0,0), true);
-        this.box2DDebugRenderer = new Box2DDebugRenderer();
+        world = new World(new Vector2(0,-10f), true);
+        box2DDebugRenderer = new Box2DDebugRenderer();
 
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
         Body body;
+        Float scale = 140f; // 140f
 
         // Create ground, copy this for other types of bodies/fixtures
-       for(MapObject object : map.getLayers().get(0).getObjects().getByType(RectangleMapObject.class)) {
+        for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
+           float scaledWidth = rectangle.getWidth() * scale;
+           float scaledHeight = rectangle.getHeight() * scale;
+           float scaledX = rectangle.getX() * scale;
+           float scaledY = rectangle.getY() * scale;
+
+
            bdef.type = BodyDef.BodyType.StaticBody;
-           bdef.position.set((rectangle.getX() + rectangle.getWidth() / 2f) / PPM, (rectangle.getY() + rectangle.getHeight() / 2) / PPM);
+           bdef.position.set(
+               (scaledX + scaledWidth / 2f) / Constans.PPM,
+               (scaledY + scaledHeight / 2f) / Constans.PPM
+           );
 
            body = world.createBody(bdef);
 
-           shape.setAsBox((rectangle.getWidth() / 2f) / PPM, (rectangle.getHeight() / 2f) / PPM);
+           shape.setAsBox(
+               (scaledWidth / 2f) / Constans.PPM,
+               (scaledHeight / 2f) / Constans.PPM
+           );
            fdef.shape = shape;
            body.createFixture(fdef);
        }
 
         this.main = main;
-        this.player = new Obanana();
+        this.player = new Obanana(world, main);
 
     }
 
     private void update() {
+        // handle user input
+        ObananaInput.inputHandler(player);
+
+        int speed = 1000;
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) camera.position.x -= speed * Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) camera.position.x += speed * Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) camera.position.y -= speed * Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) camera.position.y += speed * Gdx.graphics.getDeltaTime();
+
+//        camera.position.x = player.b2body.getPosition().x;
+//        camera.position.y = player.b2body.getPosition().y + 550f; // 550f
+
         world.step(1 / 60f, 6,2);
         cameraUpdate();
 
-        batch.setProjectionMatrix(camera.combined);
         renderer.setView(camera);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
@@ -94,7 +120,6 @@ public class GameScreen extends InputAdapter implements Screen {
     }
 
     private void cameraUpdate() {
-        // Default = 0.18f
         camera.update();
     }
 
@@ -110,15 +135,14 @@ public class GameScreen extends InputAdapter implements Screen {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        batch.begin();
+        player.draw(batch);
+        batch.end();
+        cameraUpdate();
+
         renderer.render();
 
         box2DDebugRenderer.render(world, camera.combined);
-
-        batch.begin();
-        Texture Obanana = main.getAssetManager().get(Assets.OBANANA);
-        batch.draw(Obanana, 0, 0);
-        batch.end();
-        cameraUpdate();
     }
 
     @Override
@@ -148,6 +172,10 @@ public class GameScreen extends InputAdapter implements Screen {
         box2DDebugRenderer.dispose();
         world.dispose();
         batch.dispose();
+    }
+
+    public Obanana getPlayer() {
+        return this.player;
     }
 
 }

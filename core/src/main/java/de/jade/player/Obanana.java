@@ -1,50 +1,95 @@
 package de.jade.player;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 
-public class Obanana {
-    public float x,y;
-    public float dx, dy;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
 
-    public Obanana(){
-        x = Gdx.graphics.getWidth()/2;
-        y = Gdx.graphics.getHeight()/2;
-        dx = 5.5f;
-        dy = 5.5f;
+import de.jade.Assets;
+import de.jade.Main;
+import de.jade.helper.Constans;
 
+
+public class Obanana extends Sprite {
+    public World world;
+    public Body b2body;
+    private float velocityX;
+    private TextureAtlas obananaTex;
+    private TextureRegion obananaIdle;
+    private Sprite sprite;
+
+
+    // Obanana Main Stats
+    public int lives = 3;
+    /* public keys unlockedKeys; */
+    public int damamge = 50;
+
+    public Obanana(World world, Main main) {
+        super(main.assetManager.get(Assets.OBANANA).findRegion("obananaStand"));
+        this.world = world;
+        defineObanana();
+        obananaIdle = new TextureRegion(getTexture(), 0, 0 , 32, 32);
+        setBounds(0, 0, 32 / Constans.PPM, 32 / Constans.PPM);
+        setRegion(obananaIdle);
     }
-    public void render(OrthographicCamera cam){ // Changed to Texture Atlas
-        cam.position.x = this.getX();
-        cam.position.y = this.getY();
-        cam.update();
+
+    public void defineObanana() {
+        //sprite = new Sprite(obananatex, 32, 32);
+
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(1300f, 1700f);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        b2body = world.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(100f, 100f);
+
+        fdef.shape = shape;
+       // b2body.setLinearDamping(0.5f);
+        fdef.friction = 2.5f; // 2.5f
+        b2body.createFixture(fdef);
     }
 
-    public void update(){
-        if(Gdx.input.isKeyPressed(Input.Keys.A)){
-            x -= dx;
+    public static void action(String type, Obanana player) {
+        switch(type) {
+            case "JUMP":
+                player.b2body.applyLinearImpulse(new Vector2(0,4f), player.b2body.getWorldCenter(), true);
+                break;
+            case "DUCK":
+                break;
+            case "RIGHT":
+                if (player.b2body.getLinearVelocity().x <= 2) {
+                    player.b2body.applyLinearImpulse(new Vector2(2f, 0), player.b2body.getWorldCenter(), true);
+                }
+                break;
+            case "LEFT":
+                if (player.b2body.getLinearVelocity().x >= -2) {
+                    player.b2body.applyLinearImpulse(new Vector2(-2f, 0), player.b2body.getWorldCenter(), true);
+                }
+                break;
+            case "ATTACK":
+                break;
+            case "DASH":
+                player.b2body.setLinearVelocity(new Vector2(20f,0));
+                break;
+            default:
+                break;
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)){
-            x += dx;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.S)){
-            y -= dy;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.W)){
-            y += dy;
-        }
-    }
-    public void setPos(float x, float y){
-        x = this.x;
-        y = this.y;
     }
 
+    public void update(float delta) {
+    }
 
-    public float getX(){
-        return x;
+    public void setPosition(float x, float y) {
+
     }
-    public float getY(){
-        return y;
+
+    public void draw(SpriteBatch batch) {
+        super.draw(batch);
     }
+    // Specified stuff follows here
 }
