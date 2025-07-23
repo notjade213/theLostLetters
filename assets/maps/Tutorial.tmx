@@ -1,28 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="29" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="34">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="29" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="34">
  <tileset firstgid="1" source="tileset.tsx"/>
  <tileset firstgid="17" source="flowerytileset.tsx"/>
  <tileset firstgid="22" source="PitSign.tsx"/>
- <imagelayer id="7" name="ColorBack" repeatx="1" repeaty="1">
-  <image source="ColorBack.png" width="240" height="135"/>
- </imagelayer>
- <imagelayer id="5" name="Background4" offsetx="0" offsety="375" parallaxx="0.1" repeatx="1">
-  <image source="BackgroundLayer3.png" width="240" height="135"/>
- </imagelayer>
- <imagelayer id="6" name="Background3" offsetx="0" offsety="400" parallaxx="0.25" repeatx="1">
-  <image source="BackgroundLayerYes.png" width="240" height="135"/>
- </imagelayer>
- <imagelayer id="4" name="Background2" offsetx="0" offsety="475" parallaxx="0.5" repeatx="1">
-  <image source="BackgroundLayer2.png" width="240" height="135"/>
- </imagelayer>
- <imagelayer id="3" name="Background1" offsetx="0" offsety="500" parallaxx="0.75" repeatx="1">
-  <image source="BackgroundLayer1.png" width="240" height="500"/>
- </imagelayer>
- <layer id="2" name="SolidGround" width="100" height="29">
-  <data encoding="base64" compression="zlib">
-   eJztl2EOgjAMRqdGUUTjkTgaR+Noln9N026MbVLi95IvcQak6ytLDAG05EZ5ZwS0BT58AR++gA9fwIcv4MMXnxDGBwU+/PCBD3csTjoR7b0B+6E52rsmAAA4Gi/KhYXWU8nvXSvUVIqHGjRkr7V+95QTS1/oYyi5uRIeatCg3o/kYOah72Z+TQ0ffB5lL1rNauy91nzw65+UTqRFXVvOmho+BuOztq7Bsud7sOvWnsn3eQ7t/g/y52zppfRB+5zkGafFmseUD/m+aGdqbLY0FzV8WHXkhte2spcTj7a3NbH2n/Ih13IeYrNluajhw6rjKPm1j5iLo/tI4dFHql/wAR9reqmRez98tPWRC3zAB3zYwAd8wIeNRx+t8ezjH/kCMIYw6A==
-  </data>
- </layer>
  <objectgroup id="8" name="SolidGround">
   <object id="7" x="1" y="577" width="446" height="351"/>
   <object id="8" x="449" y="576" width="127" height="30"/>
@@ -52,6 +32,32 @@
   <object id="32" x="2848" y="223" width="32" height="33"/>
   <object id="33" x="2816" y="191" width="33" height="33"/>
  </objectgroup>
+ <imagelayer id="7" name="ColorBack" repeatx="1" repeaty="1">
+  <image source="ColorBack.png" width="240" height="135"/>
+ </imagelayer>
+ <imagelayer id="9" name="Clouds" offsetx="0" offsety="250" parallaxx="0.02" repeatx="1">
+  <image source="CloudBackground.png" width="240" height="135"/>
+ </imagelayer>
+ <imagelayer id="10" name="Clouds" offsetx="0" offsety="125" parallaxx="0.02" repeatx="1">
+  <image source="CloudBackground.png" width="240" height="135"/>
+ </imagelayer>
+ <imagelayer id="5" name="Background4" offsetx="0" offsety="375" parallaxx="0.1" repeatx="1">
+  <image source="BackgroundLayer3.png" width="240" height="135"/>
+ </imagelayer>
+ <imagelayer id="6" name="Background3" offsetx="0" offsety="400" parallaxx="0.25" repeatx="1">
+  <image source="BackgroundLayerYes.png" width="240" height="135"/>
+ </imagelayer>
+ <imagelayer id="4" name="Background2" offsetx="0" offsety="475" parallaxx="0.5" repeatx="1">
+  <image source="BackgroundLayer2.png" width="240" height="135"/>
+ </imagelayer>
+ <imagelayer id="3" name="Background1" offsetx="0" offsety="500" parallaxx="0.75" repeatx="1">
+  <image source="BackgroundLayer1.png" width="240" height="500"/>
+ </imagelayer>
+ <layer id="2" name="SolidGround" width="100" height="29">
+  <data encoding="base64" compression="zlib">
+   eJztl2EOgjAMRqdGUUTjkTgaR+Noln9N026MbVLi95IvcQak6ytLDAG05EZ5ZwS0BT58AR++gA9fwIcv4MMXnxDGBwU+/PCBD3csTjoR7b0B+6E52rsmAAA4Gi/KhYXWU8nvXSvUVIqHGjRkr7V+95QTS1/oYyi5uRIeatCg3o/kYOah72Z+TQ0ffB5lL1rNauy91nzw65+UTqRFXVvOmho+BuOztq7Bsud7sOvWnsn3eQ7t/g/y52zppfRB+5zkGafFmseUD/m+aGdqbLY0FzV8WHXkhte2spcTj7a3NbH2n/Ih13IeYrNluajhw6rjKPm1j5iLo/tI4dFHql/wAR9reqmRez98tPWRC3zAB3zYwAd8wIeNRx+t8ezjH/kCMIYw6A==
+  </data>
+ </layer>
  <layer id="1" name="SoftDeco" width="100" height="29">
   <data encoding="base64" compression="zlib">
    eJztlWEOgyAMRr3CQHeeHYWjeBSPtqNMl5KxBhCt0S/xe3+2MGxZX4tdR3I8rj4A+YM+sKAPLOgDC/rAgj6woA8s6AML+sDiaB/0a+MMH3qNzsrc3Ucvn4N8H4zxvPH5I2rjVuJd5UPX11rrhnzBGsNam3iG+b9OpXjI85Fj7q+35flYiz201maZw9hv8jlK7pCLN+8fnexd1pzs9xtybsF6TxyBrsWeeWmpTV//7ZvTS08h9X7LrNbw0kORtA7Dby1sOVPuzkx7KZ7PZfaVni/sm9J4azwzOVxmbUH3g1N10sT9BR8vHf8IaneU5f5Kqc1FkiukOZHm4wzSO0q/SzXO8L7Xs9rK3Xygoe9P+sCCPrCgDyzoAwv6wII+sKAPLOiDEDsfsQIVvg==

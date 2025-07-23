@@ -1,13 +1,35 @@
-ObamaSpritesheet.png
-size: 437, 68
-name: obananaIdle
+ObamaSpriteSheet.png
+size: 369, 62
 format: RGBA8888
 filter: Linear, Linear
 repeat: none
 pma: false
-obananaStand
-xy: 0, 0
-size: 32, 32
-offset: 0, 0
-index: -1
-
+DashSprite
+  bounds: 162, 29, 64, 26
+  offsets: 0, 0, 64, 32
+DeathSprite
+  bounds: 1, 1, 253, 26
+  offsets: 3, 0, 256, 32
+DuckSprite
+  bounds: 228, 29, 32, 19
+  offsets: 0, 0, 32, 32
+  rotate: 90
+FallSprite
+  bounds: 249, 30, 62, 28
+  offsets: 1, 0, 64, 32
+IdleSprite
+  bounds: 345, 35, 23, 26
+  offsets: 3, 0, 32, 32
+JumpSprite
+  bounds: 313, 30, 30, 30
+  offsets: 0, 0, 32, 32
+LandSprite
+  bounds: 349, 1, 32, 12
+  offsets: 0, 0, 32, 32
+  rotate: 90
+PunchSprite
+  bounds: 1, 29, 159, 26
+  offsets: 1, 0, 160, 32
+RunSprite
+  bounds: 256, 1, 91, 27
+  offsets: 2, 0, 96, 32

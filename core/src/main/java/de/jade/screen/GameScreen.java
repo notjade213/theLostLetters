@@ -54,53 +54,44 @@ public class GameScreen extends InputAdapter implements Screen {
         this.camera = new OrthographicCamera();
         gamePort = new FitViewport(main.camera.viewportWidth, Main.camera.viewportHeight, camera);
 
-        camera.position.set(gamePort.getScreenWidth() / 2f,gamePort.getScreenHeight() / 2f, 0f); // 280f + 170f
-        camera.zoom = 1f; // 0.008f
+        camera.position.set((gamePort.getScreenWidth() / 2f) / Constans.PPM, (gamePort.getScreenHeight() / 2f) / Constans.PPM, 0f);
+        camera.zoom = 0.2f / Constans.PPM;
         this.batch = new SpriteBatch();
 
         maploader = new TmxMapLoader();
         map = maploader.load("maps/Tutorial.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map, 140 / Constans.PPM); // 140 / PPM
+        renderer = new OrthogonalTiledMapRenderer(map, 1f / Constans.PPM);
 
         // Box2D variables
-        world = new World(new Vector2(0,-10f), true);
+        world = new World(new Vector2(0, -10f), true);
         box2DDebugRenderer = new Box2DDebugRenderer();
 
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
         Body body;
-        Float scale = 140f; // 140f
 
         // Create ground, copy this for other types of bodies/fixtures
-        for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
-           Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+        for (MapObject object : map.getLayers().get(0).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-           float scaledWidth = rectangle.getWidth() * scale;
-           float scaledHeight = rectangle.getHeight() * scale;
-           float scaledX = rectangle.getX() * scale;
-           float scaledY = rectangle.getY() * scale;
+            float x = (rectangle.getX() + rectangle.getWidth() / 2f) / Constans.PPM;
+            float y = (rectangle.getY() + rectangle.getHeight() / 2f) / Constans.PPM;
+            float halfWidth = rectangle.getWidth() / 2f / Constans.PPM;
+            float halfHeight = rectangle.getHeight() / 2f / Constans.PPM;
 
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set(x, y);
 
-           bdef.type = BodyDef.BodyType.StaticBody;
-           bdef.position.set(
-               (scaledX + scaledWidth / 2f) / Constans.PPM,
-               (scaledY + scaledHeight / 2f) / Constans.PPM
-           );
+            body = world.createBody(bdef);
 
-           body = world.createBody(bdef);
-
-           shape.setAsBox(
-               (scaledWidth / 2f) / Constans.PPM,
-               (scaledHeight / 2f) / Constans.PPM
-           );
-           fdef.shape = shape;
-           body.createFixture(fdef);
-       }
+            shape.setAsBox(halfWidth, halfHeight);
+            fdef.shape = shape;
+            body.createFixture(fdef);
+        }
 
         this.main = main;
         this.player = new Obanana(world, main);
-
     }
 
     private void update() {
@@ -109,10 +100,21 @@ public class GameScreen extends InputAdapter implements Screen {
         // handle user input
         ObananaInput.inputHandler(player);
 
-        camera.position.x = player.b2body.getPosition().x;
-        camera.position.y = player.b2body.getPosition().y + 550f; // 550f
+//        int speed = 10;
+//        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) camera.position.x -= speed * Gdx.graphics.getDeltaTime();
+//        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) camera.position.x += speed * Gdx.graphics.getDeltaTime();
+//        if (Gdx.input.isKeyPressed(Input.Keys.UP)) camera.position.y += speed * Gdx.graphics.getDeltaTime();
+//        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) camera.position.y -= speed * Gdx.graphics.getDeltaTime();
 
-        world.step(1 / 60f, 6,2);
+        camera.position.x = player.b2body.getPosition().x;
+        camera.position.y = player.b2body.getPosition().y; // 550f
+
+        world.step(1 / 60f, 6, 2);
+
+        if (camera.position.x >= 90.37492 ) {
+            camera.position.set(90.37492f, camera.position.y, 0f);
+        }
+
         cameraUpdate();
 
         renderer.setView(camera);
@@ -136,15 +138,19 @@ public class GameScreen extends InputAdapter implements Screen {
     public void render(float delta) {
         this.update();
 
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.begin();
-        player.draw(batch);
-        batch.end();
-        cameraUpdate();
+        batch.setProjectionMatrix(camera.combined);
 
         renderer.render();
+
+        batch.begin();
+        player.update(delta);
+        player.draw(batch);
+        batch.end();
+
+        cameraUpdate();
 
         box2DDebugRenderer.render(world, camera.combined);
     }
@@ -163,7 +169,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public void resume() {
-        if (!tutorialTheme.isPlaying() ) {
+        if (!tutorialTheme.isPlaying()) {
             tutorialTheme.play();
         }
     }
@@ -186,5 +192,4 @@ public class GameScreen extends InputAdapter implements Screen {
     public Obanana getPlayer() {
         return this.player;
     }
-
 }
