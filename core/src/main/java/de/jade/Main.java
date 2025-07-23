@@ -62,15 +62,17 @@ public class Main extends Game implements Telegraph {
         batch.dispose();
     }
 
-    // Sets the state of the game to what it was when it first began, set to "r" for testing
     public void reset() {
         status.reset();
         getScreen().dispose();
-        setScreen(new GameScreen(this));
     }
 
     @Override
     public void resume () {
+        super.resume();
+        if (getScreen() != null) {
+            getScreen().resume();
+        }
     }
 
     @Override
@@ -84,6 +86,10 @@ public class Main extends Game implements Telegraph {
 
     @Override
     public void pause() {
+        super.pause();
+        if (getScreen() != null) {
+            getScreen().pause();
+        }
     }
 
 

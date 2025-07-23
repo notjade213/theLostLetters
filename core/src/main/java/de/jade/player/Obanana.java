@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import de.jade.Assets;
 import de.jade.Main;
 import de.jade.helper.Constans;
+import de.jade.player.abilities.Attack;
 
 
 public class Obanana extends Sprite {
@@ -20,7 +21,7 @@ public class Obanana extends Sprite {
     private TextureAtlas obananaTex;
     private TextureRegion obananaIdle;
     private Sprite sprite;
-
+    private Attack attack;
 
     // Obanana Main Stats
     public int lives = 3;
@@ -30,6 +31,7 @@ public class Obanana extends Sprite {
     public Obanana(World world, Main main) {
         super(main.assetManager.get(Assets.OBANANA).findRegion("obananaStand"));
         this.world = world;
+        this.attack = new Attack();
         defineObanana();
         obananaIdle = new TextureRegion(getTexture(), 0, 0 , 32, 32);
         setBounds(0, 0, 32 / Constans.PPM, 32 / Constans.PPM);
@@ -54,7 +56,7 @@ public class Obanana extends Sprite {
         b2body.createFixture(fdef);
     }
 
-    public static void action(String type, Obanana player) {
+    public void action(String type, Obanana player) {
         switch(type) {
             case "JUMP":
                 player.b2body.applyLinearImpulse(new Vector2(0,4f), player.b2body.getWorldCenter(), true);
@@ -72,6 +74,7 @@ public class Obanana extends Sprite {
                 }
                 break;
             case "ATTACK":
+                attack.PunchAttack(player);
                 break;
             case "DASH":
                 player.b2body.setLinearVelocity(new Vector2(20f,0));
@@ -90,6 +93,11 @@ public class Obanana extends Sprite {
 
     public void draw(SpriteBatch batch) {
         super.draw(batch);
+    }
+
+
+    public Attack getAttack(){
+        return this.attack;
     }
     // Specified stuff follows here
 }

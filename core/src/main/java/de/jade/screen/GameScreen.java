@@ -23,6 +23,7 @@ import de.jade.Main;
 import de.jade.helper.Constans;
 import de.jade.player.Obanana;
 import de.jade.player.ObananaInput;
+import de.jade.player.abilities.Attack;
 
 public class GameScreen extends InputAdapter implements Screen {
 
@@ -45,7 +46,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     public GameScreen(Main main) {
         inputManager = new ObananaInput();
-        Gdx.input.setInputProcessor(new ObananaInput());
+        Gdx.input.setInputProcessor(inputManager);
 
         tutorialTheme = main.assetManager.get(Assets.TUTORIAL_THEME);
         tutorialTheme.setLooping(true);
@@ -103,14 +104,10 @@ public class GameScreen extends InputAdapter implements Screen {
     }
 
     private void update() {
+        player.getAttack().updatePunch(Gdx.graphics.getDeltaTime());
+
         // handle user input
         ObananaInput.inputHandler(player);
-
-        int speed = 1000;
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) camera.position.x -= speed * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) camera.position.x += speed * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) camera.position.y -= speed * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) camera.position.y += speed * Gdx.graphics.getDeltaTime();
 
         camera.position.x = player.b2body.getPosition().x;
         camera.position.y = player.b2body.getPosition().y + 550f; // 550f
@@ -159,11 +156,16 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public void pause() {
+        if (tutorialTheme.isPlaying()) {
+            tutorialTheme.pause();
+        }
     }
 
     @Override
     public void resume() {
-
+        if (!tutorialTheme.isPlaying() ) {
+            tutorialTheme.play();
+        }
     }
 
     @Override

@@ -15,17 +15,17 @@ public class ObananaInput extends InputAdapter {
     public static void inputHandler(Obanana player) {
 
         if (Gdx.input.isKeyJustPressed(JUMP_KEY)) {
-            Obanana.action("JUMP", player);
+            player.action("JUMP", player);
         } else if (Gdx.input.isKeyPressed(DUCK_KEY)) {
-            Obanana.action("DUCK", player);
+            player.action("DUCK", player);
         } else if (Gdx.input.isKeyPressed(RIGHT_KEY)) {
-            Obanana.action("RIGHT", player);
+            player.action("RIGHT", player);
         } else if (Gdx.input.isKeyPressed(LEFT_KEY)) {
-            Obanana.action("LEFT", player);
-        } else if (Gdx.input.isKeyPressed(ATTACK_KEY)) {
-            Obanana.action("ATTACK", player);
+            player.action("LEFT", player);
+        } else if (Gdx.input.isKeyJustPressed(ATTACK_KEY)) {
+            player.action("ATTACK", player);
         } else if (Gdx.input.isKeyJustPressed(DASH_KEY)) {
-            Obanana.action("DASH", player);
+            player.action("DASH", player);
         }
     }
 

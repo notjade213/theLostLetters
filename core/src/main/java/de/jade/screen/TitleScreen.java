@@ -1,9 +1,11 @@
 package de.jade.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -18,7 +20,7 @@ import de.jade.Main;
 
 import static com.badlogic.gdx.utils.Align.*;
 
-public class TitleScreen extends AbstractScreen {
+public class TitleScreen implements Screen {
     private static final String TITLE = "The Lost Letters";
     private static final String OPTION_ONE = "Start";
     private static final String OPTION_TWO = "Exit Game";
@@ -27,25 +29,27 @@ public class TitleScreen extends AbstractScreen {
     private final Stage stage;
     private Music menuTheme;
     public static Table table;
+    private final SpriteBatch batch;
+    private final Main main;
 
-    public TitleScreen(Main game) {
-        super(game);
-
+    public TitleScreen(Main main) {
+        this.batch = new SpriteBatch();
+        this.main = main;
         table = new Table();
-        menuTheme = game.assetManager.get(Assets.MENU_THEME);
+        menuTheme = main.assetManager.get(Assets.MENU_THEME);
         menuTheme.setLooping(true);
 
         // Declaring Variables, Label only used for Title
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = Color.WHITE;
-        style.font = game.assetManager.get(Assets.HUD_FONT);
+        style.font = main.assetManager.get(Assets.HUD_FONT);
 
-        Sprite spriteTitle = new Sprite(game.assetManager.get(Assets.LOGO));
+        Sprite spriteTitle = new Sprite(main.assetManager.get(Assets.LOGO));
         Drawable drawableTitle = new SpriteDrawable(spriteTitle);
         Image imageTitle = new Image(drawableTitle);
 
         // Creating start Button using Image Button
-        Sprite spriteSB = new Sprite(game.assetManager.get(Assets.START_BUTTON));
+        Sprite spriteSB = new Sprite(main.assetManager.get(Assets.START_BUTTON));
         spriteSB.setSize(400,400);
         Drawable drawableSB = new SpriteDrawable(spriteSB);
 
@@ -55,7 +59,7 @@ public class TitleScreen extends AbstractScreen {
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(final InputEvent event, final float x, final float y) {
-                game.setScreen(new GameScreen(game));
+                main.setScreen(new GameScreen(main));
             }
 
             @Override
@@ -66,7 +70,7 @@ public class TitleScreen extends AbstractScreen {
 
 
         // Creating Exit Button as Image Button
-        Sprite spriteEB = new Sprite(game.assetManager.get(Assets.EXIT_BUTTON));
+        Sprite spriteEB = new Sprite(main.assetManager.get(Assets.EXIT_BUTTON));
         spriteEB.setSize(350,350);
         Drawable drawableEB = new SpriteDrawable(spriteEB);
 
@@ -108,10 +112,10 @@ public class TitleScreen extends AbstractScreen {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.getBatch().begin();
-        game.getBatch().draw(game.assetManager.get(Assets.TITLE_BACKGROUND), 0 , 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.begin();
+        batch.draw(main.assetManager.get(Assets.TITLE_BACKGROUND), 0 , 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //game.getBatch().draw(game.getAssetsManager().get(Assets.LOGO), 0 , 0, 100,100);
-        game.getBatch().end();
+        batch.end();
 
         stage.act(v);
         stage.draw();
@@ -124,12 +128,16 @@ public class TitleScreen extends AbstractScreen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
 
+    }
+
+    @Override
+    public void hide() {
+        menuTheme.stop();
     }
 
     @Override
