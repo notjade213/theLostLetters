@@ -46,13 +46,13 @@ public class Obanana extends Sprite {
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
-        for(int i = 0; i < 4; i++)
+        for(int i = 0; i < 3; i++)
             frames.add(new TextureRegion(main.assetManager.get(Assets.OBANANA).findRegion("RunSprite"), i * 32, 0, 32, 32));
         obananaRun = new Animation<TextureRegion>(0.1f, frames);
 
         frames.clear();
 
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 2; i++)
             frames.add(new TextureRegion(main.assetManager.get(Assets.OBANANA).findRegion("FallSprite"), i * 32, 0, 32, 32));
         obananaFall = new Animation<TextureRegion>(0.1f, frames);
 

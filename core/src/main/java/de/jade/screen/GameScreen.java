@@ -129,13 +129,13 @@ public class GameScreen extends InputAdapter implements Screen {
         // handle user input
         ObananaInput.inputHandler(player);
 
-//        camera.position.x = player.b2body.getPosition().x;
-//        camera.position.y = player.b2body.getPosition().y + 120f / Constans.PPM;
-        int speed = 10;
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) camera.position.x -= speed * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) camera.position.x += speed * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) camera.position.y += speed * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) camera.position.y -= speed * Gdx.graphics.getDeltaTime();
+        camera.position.x = player.b2body.getPosition().x;
+        camera.position.y = player.b2body.getPosition().y + 120f / Constans.PPM;
+//        int speed = 10;
+//        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) camera.position.x -= speed * Gdx.graphics.getDeltaTime();
+//        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) camera.position.x += speed * Gdx.graphics.getDeltaTime();
+//        if (Gdx.input.isKeyPressed(Input.Keys.UP)) camera.position.y += speed * Gdx.graphics.getDeltaTime();
+//        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) camera.position.y -= speed * Gdx.graphics.getDeltaTime();
 
         world.step(1 / 60f, 6, 2);
 
