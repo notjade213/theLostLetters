@@ -27,7 +27,7 @@ public class Assets {
     public static final AssetDescriptor<Texture> EXIT_BUTTON = new AssetDescriptor<Texture>("sprites/ui" + File.separator + "Exitbutton.png",
         Texture.class);
 
-    public static final AssetDescriptor<TextureAtlas> OBANANA = new AssetDescriptor<TextureAtlas>("sprites/characters" + File.separator + "ObamaSpritesheet.atlas",
+    public static final AssetDescriptor<TextureAtlas> OBANANA = new AssetDescriptor<TextureAtlas>("sprites/characters" + File.separator + "ObamaSpriteSheet.atlas",
     TextureAtlas.class);
 
     public static final AssetDescriptor<Music> TUTORIAL_THEME = new AssetDescriptor<Music>("sfx" + File.separator + "TutorialTheme.mp3",

@@ -8,10 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import de.jade.player.CurrentPlayerStatus;
-import de.jade.player.Obanana;
 import de.jade.screen.GameScreen;
-import de.jade.screen.StartScreen;
 
 
 public class Main extends Game implements Telegraph {
@@ -25,11 +22,9 @@ public class Main extends Game implements Telegraph {
     public  AssetManager assetManager;
 
     // Misc
-    private final CurrentPlayerStatus status;
     public static OrthographicCamera camera;
 
     public Main() {
-        status = new CurrentPlayerStatus();
     }
 
     @Override
@@ -63,7 +58,6 @@ public class Main extends Game implements Telegraph {
     }
 
     public void reset() {
-        status.reset();
         getScreen().dispose();
     }
 

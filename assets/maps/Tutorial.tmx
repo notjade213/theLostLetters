@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="29" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="34">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="29" tilewidth="32" tileheight="32" infinite="0" nextlayerid="15" nextobjectid="59">
  <tileset firstgid="1" source="tileset.tsx"/>
  <tileset firstgid="17" source="flowerytileset.tsx"/>
  <tileset firstgid="22" source="PitSign.tsx"/>
+ <tileset firstgid="23" source="Door.tsx"/>
  <objectgroup id="8" name="SolidGround">
-  <object id="7" x="1" y="577" width="446" height="351"/>
-  <object id="8" x="449" y="576" width="127" height="30"/>
-  <object id="9" x="578" y="511" width="126" height="70"/>
+  <object id="7" x="1" y="576.333" width="446.333" height="351.667"/>
+  <object id="8" x="448" y="576.333" width="128" height="29.6667"/>
+  <object id="9" x="576" y="511.333" width="128" height="69.6667"/>
   <object id="10" x="702" y="576" width="389" height="52"/>
-  <object id="11" x="800" y="448" width="194" height="64"/>
-  <object id="12" x="1090" y="575" width="157" height="64"/>
-  <object id="13" x="1217" y="543" width="30" height="31"/>
-  <object id="14" x="1089" y="415" width="158" height="97"/>
-  <object id="15" x="1088" y="511" width="32" height="33"/>
-  <object id="16" x="1247" y="542" width="319" height="329"/>
+  <object id="11" x="800" y="448" width="191.667" height="64"/>
+  <object id="12" x="1090.25" y="576.25" width="157" height="64"/>
+  <object id="13" x="1216.58" y="544.333" width="30.6667" height="31.1667"/>
+  <object id="14" x="1089.5" y="414.5" width="158" height="93.5"/>
+  <object id="15" x="1089.75" y="508" width="23.3333" height="28.4167"/>
+  <object id="16" x="1247.33" y="544.333" width="320.667" height="326.667"/>
   <object id="17" x="1633" y="479" width="30" height="430"/>
   <object id="18" x="1728" y="415" width="32" height="505"/>
   <object id="19" x="1856" y="479" width="31" height="413"/>
   <object id="20" x="1985" y="543" width="30" height="357"/>
   <object id="21" x="2112" y="543" width="223" height="352"/>
-  <object id="22" x="2432" y="607" width="31" height="257"/>
-  <object id="23" x="2465" y="576" width="32" height="35"/>
+  <object id="22" x="2432" y="608" width="31" height="256"/>
+  <object id="23" x="2464.33" y="576" width="32.6667" height="35"/>
   <object id="24" x="2497" y="543" width="32" height="34"/>
   <object id="25" x="2528" y="512" width="33" height="34"/>
-  <object id="26" x="2560" y="480" width="158" height="33"/>
+  <object id="26" x="2560" y="480" width="158.667" height="33"/>
   <object id="27" x="2687" y="513" width="32" height="354"/>
   <object id="28" x="2784" y="415" width="33" height="450"/>
   <object id="29" x="2944" y="479" width="255" height="375"/>
@@ -31,14 +32,30 @@
   <object id="31" x="2880" y="253" width="162" height="34"/>
   <object id="32" x="2848" y="223" width="32" height="33"/>
   <object id="33" x="2816" y="191" width="33" height="33"/>
+  <object id="34" x="2816.33" y="-0.333333" width="32.3333" height="191.333"/>
+  <object id="44" x="3201" y="278" width="61" height="365"/>
+ </objectgroup>
+ <objectgroup id="13" name="Pit"/>
+ <objectgroup id="10" name="DoorOpen">
+  <object id="36" x="3499" y="333"/>
+  <object id="37" x="2897" y="266" width="303" height="414"/>
+ </objectgroup>
+ <objectgroup id="11" name="DoorEnter">
+  <object id="47" x="3072" y="413" width="64" height="66"/>
+  <object id="48" x="3113" y="423" width="1"/>
+  <object id="49" x="3072" y="414" width="63" height="66"/>
+  <object id="53" x="-453" y="734" width="445" height="183"/>
+  <object id="54" x="1581" y="681" width="416" height="225"/>
+  <object id="55" x="2024" y="692" width="432" height="235"/>
+  <object id="57" x="2721" y="673" width="270" height="220"/>
  </objectgroup>
  <imagelayer id="7" name="ColorBack" repeatx="1" repeaty="1">
   <image source="ColorBack.png" width="240" height="135"/>
  </imagelayer>
- <imagelayer id="9" name="Clouds" offsetx="0" offsety="250" parallaxx="0.02" repeatx="1">
+ <imagelayer id="9" name="Clouds" offsetx="-4" offsety="285.333" parallaxx="0.02" repeatx="1">
   <image source="CloudBackground.png" width="240" height="135"/>
  </imagelayer>
- <imagelayer id="10" name="Clouds" offsetx="0" offsety="125" parallaxx="0.02" repeatx="1">
+ <imagelayer id="14" name="Clouds" offsetx="113.333" offsety="149.333" parallaxx="0.02" repeatx="1">
   <image source="CloudBackground.png" width="240" height="135"/>
  </imagelayer>
  <imagelayer id="5" name="Background4" offsetx="0" offsety="375" parallaxx="0.1" repeatx="1">
@@ -55,12 +72,17 @@
  </imagelayer>
  <layer id="2" name="SolidGround" width="100" height="29">
   <data encoding="base64" compression="zlib">
-   eJztl2EOgjAMRqdGUUTjkTgaR+Noln9N026MbVLi95IvcQak6ytLDAG05EZ5ZwS0BT58AR++gA9fwIcv4MMXnxDGBwU+/PCBD3csTjoR7b0B+6E52rsmAAA4Gi/KhYXWU8nvXSvUVIqHGjRkr7V+95QTS1/oYyi5uRIeatCg3o/kYOah72Z+TQ0ffB5lL1rNauy91nzw65+UTqRFXVvOmho+BuOztq7Bsud7sOvWnsn3eQ7t/g/y52zppfRB+5zkGafFmseUD/m+aGdqbLY0FzV8WHXkhte2spcTj7a3NbH2n/Ih13IeYrNluajhw6rjKPm1j5iLo/tI4dFHql/wAR9reqmRez98tPWRC3zAB3zYwAd8wIeNRx+t8ezjH/kCMIYw6A==
+   eJztl+0OgjAMRadGQUTDI/FoPBqPZol/mqYbH+ugxHuSmziD0PWUJYYASvKgfFYElAU+fAEfvoAPX8CHL+DDF10I/ZMCH37o4MMdk5NKRHtvwHFojo6uCQAAzsabcmOh9ZBzv7tBTbl4qEFD9lrrd0O5sDSZPtqcHxvhoQYN6n1PDkYe+m7k11j44PMoe1FqVlPvteaDX/+iVCIl6tpy1lj4aCOftbUF057rEK9beybf5zWU+z/In7Oll9IH7XOQZ5yW2DzO+ZDvi3ampmZLc2HhI1bH2vDaFvZy4NH2tiSx/c/5kGs5D6nZirmw8BGr4yzZ20fKBXzs72OuX/ABH54CH74CH74CH74CH79Yo90XPo7zoeHRR2k8+/hHvhguMVs=
+  </data>
+ </layer>
+ <layer id="12" name="Door" width="100" height="29">
+  <data encoding="base64" compression="zlib">
+   eJztzrENACAIAEG20B73n1EqF7AgJHfJ9x8BAAAAAMAEq9rdEzxZne4JAAAAAAC+XZMGAHc=
   </data>
  </layer>
  <layer id="1" name="SoftDeco" width="100" height="29">
   <data encoding="base64" compression="zlib">
-   eJztlWEOgyAMRr3CQHeeHYWjeBSPtqNMl5KxBhCt0S/xe3+2MGxZX4tdR3I8rj4A+YM+sKAPLOgDC/rAgj6woA8s6AML+sDiaB/0a+MMH3qNzsrc3Ucvn4N8H4zxvPH5I2rjVuJd5UPX11rrhnzBGsNam3iG+b9OpXjI85Fj7q+35flYiz201maZw9hv8jlK7pCLN+8fnexd1pzs9xtybsF6TxyBrsWeeWmpTV//7ZvTS08h9X7LrNbw0kORtA7Dby1sOVPuzkx7KZ7PZfaVni/sm9J4azwzOVxmbUH3g1N10sT9BR8vHf8IaneU5f5Kqc1FkiukOZHm4wzSO0q/SzXO8L7Xs9rK3Xygoe9P+sCCPrCgDyzoAwv6wII+sKAPLOiDEDsfsQIVvg==
+   eJztldENgzAMBVmhCXSejpJRGIXROkqhSlTXSkLACJ7Eux8qGuzgs0PXkRyPqzdA/qAPLOgDC/rAgj6woA8s6AML+sCCPrA42gf92jjDh75HZ2Xu7qOP1yH+HozxvPH5I2rjVuJd5UPX11rrhnzBGsNam7SH+V2nUjzk+cgx99fb8nyqxR5aa7PMYeq3eB1j7pCLN68fXVwrc/gNObdgPSeOQNdiz7y01Kav//fN6WNPIfV+y6zW8LHnErIOw+9e2LKn3Jkpeyntz2XWlZ4vrJtkvDWemRwuc29B94NTddKk9QUfLx3/CGpnlOX8ktTmQuQKMifSfJyBPKP0t1TjDN97Paut3M0HGvr8pA8s6AML+sCCPrCgDyzoAwv6wII+CLHzAS7uFSw=
   </data>
  </layer>
 </map>

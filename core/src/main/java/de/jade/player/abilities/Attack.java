@@ -36,15 +36,11 @@ public class Attack {
 
 
     public void PunchAttack(Obanana player) {
-        if(punchAttackReady) {
-            System.out.println("Ability used!!!");
+        if (punchAttackReady) {
             // Ability logic
             punchAttackReady = false;
 
-        } else {
-            System.out.println("Punch Attack is on Cooldown for: " + punchAttackCoolDownTimer);
         }
-
     }
 }
 

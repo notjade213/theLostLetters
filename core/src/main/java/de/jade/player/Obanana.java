@@ -16,14 +16,14 @@ public class Obanana extends Sprite {
     public World world;
     public Body b2body;
     private float velocityX;
-    private Sprite sprite;
     private Attack attack;
-    private Boolean obananaIsDead;
+    private boolean obananaIsDead;
+    private boolean runningRight;
 
     private Animation obananaRun;
     private TextureRegion obananaDash;
     private TextureRegion obananaDeath;
-    private TextureRegion obananaFall;
+    private Animation obananaFall;
     private TextureRegion obananaIdle;
     private TextureRegion obananaLand;
     private TextureRegion obananaPunch;
@@ -46,9 +46,15 @@ public class Obanana extends Sprite {
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
-        for(int i = 1; i < 3; i++)
+        for(int i = 0; i < 4; i++)
             frames.add(new TextureRegion(main.assetManager.get(Assets.OBANANA).findRegion("RunSprite"), i * 32, 0, 32, 32));
         obananaRun = new Animation<TextureRegion>(0.1f, frames);
+
+        frames.clear();
+
+        for(int i = 0; i < 3; i++)
+            frames.add(new TextureRegion(main.assetManager.get(Assets.OBANANA).findRegion("FallSprite"), i * 32, 0, 32, 32));
+        obananaFall = new Animation<TextureRegion>(0.1f, frames);
 
         frames.clear();
 
@@ -56,7 +62,7 @@ public class Obanana extends Sprite {
         obananaJump = new TextureRegion(main.assetManager.get(Assets.OBANANA).findRegion("JumpSprite"));
         obananaDeath = new TextureRegion(main.assetManager.get(Assets.OBANANA).findRegion("DeathSprite"));
 
-        setBounds(getX(), getY(), 1f , 1f);
+        setBounds(getX(), getY(), 1f, 1f);
         setRegion(obananaIdle);
     }
 
@@ -68,37 +74,47 @@ public class Obanana extends Sprite {
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
-        FixtureDef fdef = new FixtureDef();
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(0.5f, 0.5f);
+        PolygonShape bodyShape = new PolygonShape();
+        bodyShape.setAsBox(0.5f, 0.45f);
 
-        fdef.shape = shape;
-        fdef.friction = 0.8f;
-        b2body.createFixture(fdef);
+        FixtureDef bodyFdef = new FixtureDef();
+        bodyFdef.shape = bodyShape;
+        bodyFdef.friction = 0.0f;
+        b2body.createFixture(bodyFdef).setUserData("body");
+
+        PolygonShape feetShape = new PolygonShape();
+        feetShape.setAsBox(0.48f, 0.05f, new Vector2(0, -0.5f), 0);
+
+        FixtureDef feetFdef = new FixtureDef();
+        feetFdef.shape = feetShape;
+        feetFdef.friction = 0.8f;
+        b2body.createFixture(feetFdef).setUserData("feet");
     }
 
     public void action(String type, Obanana player) {
         switch(type) {
             case "JUMP":
-                player.b2body.applyLinearImpulse(new Vector2(0, 8f), player.b2body.getWorldCenter(), true);
+                jump();
                 break;
             case "DUCK":
                 break;
             case "RIGHT":
-                if (player.b2body.getLinearVelocity().x <= 2) {
-                    player.b2body.applyLinearImpulse(new Vector2(2f, 0), player.b2body.getWorldCenter(), true);
+                if (player.b2body.getLinearVelocity().x <= 2.5f) {
+                    player.b2body.setLinearVelocity(0f, b2body.getLinearVelocity().y);
+                    player.b2body.applyLinearImpulse(new Vector2(2.5f, 0), player.b2body.getWorldCenter(), true);
                 }
                 break;
             case "LEFT":
-                if (player.b2body.getLinearVelocity().x >= -2) {
-                    player.b2body.applyLinearImpulse(new Vector2(-2f, 0), player.b2body.getWorldCenter(), true);
+                if (player.b2body.getLinearVelocity().x >= -2.5) {
+                    player.b2body.setLinearVelocity(0f, b2body.getLinearVelocity().y);
+                    player.b2body.applyLinearImpulse(new Vector2(-2.5f, 0), player.b2body.getWorldCenter(), true);
                 }
                 break;
             case "ATTACK":
                 attack.PunchAttack(player);
                 break;
             case "DASH":
-                player.b2body.setLinearVelocity(new Vector2(20f, 0));
+                player.b2body.setLinearVelocity(new Vector2(10f, 0));
                 break;
             default:
                 break;
@@ -126,10 +142,22 @@ public class Obanana extends Sprite {
                 region = (TextureRegion) obananaRun.getKeyFrame(stateTimer, true);
                 break;
             case FALL:
+                region = (TextureRegion) obananaFall.getKeyFrame(stateTimer, false);
+                break;
             case IDLE:
             default:
                 region = obananaIdle;
                 break;
+        }
+
+        if((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()){
+            region.flip(true, false);
+            runningRight = false;
+        }
+
+        else if((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()){
+            region.flip(true, false);
+            runningRight = true;
         }
 
         stateTimer = currentState == previousState ? stateTimer + delta : 0;
@@ -150,7 +178,7 @@ public class Obanana extends Sprite {
             return State.DEAD;
         else if ((b2body.getLinearVelocity().y > 0 && currentState == State.JUMP) || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMP))
             return State.JUMP;
-        else if (b2body.getLinearVelocity().y < 0)
+        else if (b2body.getLinearVelocity().y < 0 || b2body.getLinearVelocity().y < -10f )
             return State.FALL;
         else if (b2body.getLinearVelocity().x != 0)
             return State.RUN;
@@ -163,7 +191,6 @@ public class Obanana extends Sprite {
     public void die() {
         if (!isDead()) {
             obananaIsDead = true;
-            b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
         }
     }
 
@@ -173,5 +200,13 @@ public class Obanana extends Sprite {
 
     public float getStateTimer() {
         return stateTimer;
+    }
+
+    public void jump(){
+        if ( currentState != State.JUMP ) {
+            b2body.setLinearVelocity(b2body.getLinearVelocity().x, 0);
+            b2body.applyLinearImpulse(new Vector2(0, 7f), b2body.getWorldCenter(), true);
+            currentState = State.JUMP;
+        }
     }
 }
