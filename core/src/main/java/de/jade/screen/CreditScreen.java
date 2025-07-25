@@ -1,12 +1,12 @@
 package de.jade.screen;
 
+import com.badlogic.gdx.Screen;
 import de.jade.Main;
 
-public class CreditScreen extends AbstractScreen{
+public class CreditScreen implements Screen {
 
 
     public CreditScreen(Main game) {
-        super(game);
     }
 
     @Override
@@ -31,6 +31,11 @@ public class CreditScreen extends AbstractScreen{
 
     @Override
     public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
 
     }
 

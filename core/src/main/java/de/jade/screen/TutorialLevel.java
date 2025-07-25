@@ -36,8 +36,11 @@ public class TutorialLevel extends InputAdapter implements Screen {
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
 
+    private Door door;
+    private boolean doorRange = false;
+
     public final Obanana player;
-    List<Trigger> triggers = new ArrayList<>();
+    private List<Trigger> triggers = new ArrayList<>();
 
     private final Viewport gamePort;
     private ObananaInput inputManager;
@@ -60,8 +63,10 @@ public class TutorialLevel extends InputAdapter implements Screen {
         animationTest = new AnimationTest(main);
 
         triggers.add(new Trigger(new Vector2(92.7f,14.5f), 3f, () -> {
-
+            doorRange = true;
         }));
+
+        door = new Door(main);
 
         this.camera = new OrthographicCamera();
         camera.position.set(0, 500f, 0);
@@ -108,9 +113,66 @@ public class TutorialLevel extends InputAdapter implements Screen {
             body.createFixture(fdef);
         }
 
+        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle2 = ((RectangleMapObject) object).getRectangle();
+
+
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.type = BodyDef.BodyType.StaticBody;
+
+            bodyDef.position.set((rectangle2.x + rectangle2.width / 2) / Constans.PPM, (rectangle2.y + rectangle2.height / 2) / Constans.PPM
+            );
+
+            body2 = world.createBody(bodyDef);
+            shape2 = new PolygonShape();
+            shape2.setAsBox((rectangle2.width / 2) / Constans.PPM, (rectangle2.height / 2) / Constans.PPM);
+
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.shape = shape2;
+            fixtureDef.isSensor = true;
+
+            body2.createFixture(fixtureDef).setUserData("pit");
+        }
+
         this.main = main;
         this.player = new Obanana(world, main);
+        contactListener();
 
+        shape.dispose();
+        shape2.dispose();
+    }
+
+    private void contactListener() {
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+
+                if(contact.getFixtureA() == null || contact.getFixtureB() == null) return;
+                if(contact.getFixtureA().getUserData() == null || contact.getFixtureB().getUserData() == null) return;
+
+                if (contact.getFixtureA().getUserData().equals("player") && contact.getFixtureB().getUserData().equals("pit") ||
+                    contact.getFixtureB().getUserData().equals("player") && contact.getFixtureA().getUserData().equals("pit")) {
+
+                    player.setObananaIsPitDead(true);
+                }
+
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+
+            }
+        });
     }
 
     private void update() {
@@ -177,6 +239,9 @@ public class TutorialLevel extends InputAdapter implements Screen {
         renderer.render();
 
         batch.begin();
+        if(doorRange) {
+            door.update(batch, new TitleScreen(main), player.b2body);
+        }
         player.update(delta);
         player.draw(batch);
         batch.end();

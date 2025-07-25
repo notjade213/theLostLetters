@@ -43,7 +43,6 @@
  <objectgroup id="11" name="DoorEnter">
   <object id="47" x="3072" y="413" width="64" height="66"/>
   <object id="48" x="3113" y="423" width="1"/>
-  <object id="49" x="3072" y="414" width="63" height="66"/>
   <object id="53" x="-453" y="734" width="445" height="183"/>
   <object id="54" x="1581" y="681" width="416" height="225"/>
   <object id="55" x="2024" y="692" width="432" height="235"/>

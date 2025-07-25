@@ -2,6 +2,7 @@ package de.jade.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,13 +14,14 @@ import de.jade.Main;
 
 import static com.badlogic.gdx.utils.Align.center;
 
-public class StartScreen extends AbstractScreen{
+public class StartScreen implements Screen {
     private static final String START_MESSAGE = "Press any Button to Continue";
 
     private final Stage stage;
+    private Main game;
 
     public StartScreen(Main game) {
-        super(game);
+        this.game = game;
 
         final Table table = new Table();
         table.setFillParent(true);
@@ -77,6 +79,11 @@ public class StartScreen extends AbstractScreen{
 
     @Override
     public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
 
     }
 

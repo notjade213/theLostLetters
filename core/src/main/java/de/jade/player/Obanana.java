@@ -18,6 +18,7 @@ public class Obanana extends Sprite {
     private Attack attack;
 
     private boolean obananaIsDead;
+    private boolean obananaIsPitDead;
     private boolean runningRight;
     private boolean touchingWall;
 
@@ -37,7 +38,7 @@ public class Obanana extends Sprite {
     public State previousState;
 
     public int lives = 3;
-    public int damamge = 50;
+    public int damage = 50;
 
     public Obanana(World world, Main main) {
         this.world = world;
@@ -47,6 +48,7 @@ public class Obanana extends Sprite {
 
     public void defineObanana(Main main) {
         obananaIsDead = false;
+        obananaIsPitDead = false;
 
         // Body
         BodyDef bdef = new BodyDef();
@@ -62,14 +64,14 @@ public class Obanana extends Sprite {
         fdef.friction = 0f;
 
         PolygonShape feetShape = new PolygonShape();
-        feetShape.setAsBox(0.4999f, 0.01f, new Vector2(0f, -0.5f), 0f);
+        feetShape.setAsBox(0.49f, 0.01f, new Vector2(0f, -0.5f), 0f);
 
         FixtureDef feetDef = new FixtureDef();
         feetDef.shape = feetShape;
         feetDef.friction = 1f;
 
         b2body.createFixture(fdef);
-        b2body.createFixture(feetDef);
+        b2body.createFixture(feetDef).setUserData("player");
 
         // Animations
         stateTimer = 0f;
@@ -119,7 +121,7 @@ public class Obanana extends Sprite {
                 attack.PunchAttack(player);
                 break;
             case "DASH":
-                player.b2body.setLinearVelocity(new Vector2(10f, 0));
+                player.b2body.setLinearVelocity(new Vector2(5f, 0));
                 break;
             default:
                 break;
@@ -129,6 +131,10 @@ public class Obanana extends Sprite {
     public void update(float delta) {
         setRegion(getFrame(delta));
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+
+        if(obananaIsPitDead) {
+            pitDie();
+        }
     }
 
     public TextureRegion getFrame(float delta) {
@@ -193,10 +199,15 @@ public class Obanana extends Sprite {
             return State.IDLE;
     }
 
+    public void pitDie() {
+        obananaIsPitDead = true;
+        b2body.setLinearVelocity(0, 0);
+        b2body.setTransform(10f, 11.5f,0);
+        obananaIsPitDead = false;
+    }
+
     public void die() {
-        if (!isDead()) {
-            obananaIsDead = true;
-        }
+
     }
 
     public boolean isDead() {
@@ -213,5 +224,13 @@ public class Obanana extends Sprite {
             b2body.applyLinearImpulse(new Vector2(0, 7f), b2body.getWorldCenter(), true);
             currentState = State.JUMP;
         }
+    }
+
+    public boolean isObananaIsPitDead() {
+        return isObananaIsPitDead();
+    }
+
+    public void setObananaIsPitDead(boolean value) {
+            obananaIsPitDead = value;
     }
 }
