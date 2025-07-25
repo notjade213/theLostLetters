@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import de.jade.Assets;
 import de.jade.Main;
-import de.jade.helper.Constans;
 import de.jade.player.abilities.Attack;
 
 public class Obanana extends Sprite {
@@ -17,8 +16,10 @@ public class Obanana extends Sprite {
     public Body b2body;
     private float velocityX;
     private Attack attack;
+
     private boolean obananaIsDead;
     private boolean runningRight;
+    private boolean touchingWall;
 
     private Animation obananaRun;
     private TextureRegion obananaDash;
@@ -41,7 +42,36 @@ public class Obanana extends Sprite {
     public Obanana(World world, Main main) {
         this.world = world;
         this.attack = new Attack();
-        defineObanana();
+        defineObanana(main);
+    }
+
+    public void defineObanana(Main main) {
+        obananaIsDead = false;
+
+        // Body
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(10f, 10f);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        b2body = world.createBody(bdef);
+
+        PolygonShape bodyShape = new PolygonShape();
+        bodyShape.setAsBox(0.5f, 0.5f);
+
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = bodyShape;
+        fdef.friction = 0f;
+
+        PolygonShape feetShape = new PolygonShape();
+        feetShape.setAsBox(0.4999f, 0.01f, new Vector2(0f, -0.5f), 0f);
+
+        FixtureDef feetDef = new FixtureDef();
+        feetDef.shape = feetShape;
+        feetDef.friction = 1f;
+
+        b2body.createFixture(fdef);
+        b2body.createFixture(feetDef);
+
+        // Animations
         stateTimer = 0f;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
@@ -64,31 +94,6 @@ public class Obanana extends Sprite {
 
         setBounds(getX(), getY(), 1f, 1f);
         setRegion(obananaIdle);
-    }
-
-    public void defineObanana() {
-        obananaIsDead = false;
-
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(10f, 10f);
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        b2body = world.createBody(bdef);
-
-        PolygonShape bodyShape = new PolygonShape();
-        bodyShape.setAsBox(0.5f, 0.45f);
-
-        FixtureDef bodyFdef = new FixtureDef();
-        bodyFdef.shape = bodyShape;
-        bodyFdef.friction = 0.0f;
-        b2body.createFixture(bodyFdef).setUserData("body");
-
-        PolygonShape feetShape = new PolygonShape();
-        feetShape.setAsBox(0.48f, 0.05f, new Vector2(0, -0.5f), 0);
-
-        FixtureDef feetFdef = new FixtureDef();
-        feetFdef.shape = feetShape;
-        feetFdef.friction = 0.8f;
-        b2body.createFixture(feetFdef).setUserData("feet");
     }
 
     public void action(String type, Obanana player) {
@@ -203,7 +208,7 @@ public class Obanana extends Sprite {
     }
 
     public void jump(){
-        if ( currentState != State.JUMP ) {
+        if ( currentState != State.JUMP && b2body.getLinearVelocity().y >= -1.2 ) {
             b2body.setLinearVelocity(b2body.getLinearVelocity().x, 0);
             b2body.applyLinearImpulse(new Vector2(0, 7f), b2body.getWorldCenter(), true);
             currentState = State.JUMP;

@@ -10,7 +10,6 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -22,12 +21,15 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import de.jade.Assets;
 import de.jade.Main;
 import de.jade.helper.Constans;
+import de.jade.helper.Trigger;
 import de.jade.player.AnimationTest;
 import de.jade.player.Obanana;
 import de.jade.player.ObananaInput;
-import de.jade.player.abilities.Attack;
 
-public class GameScreen extends InputAdapter implements Screen {
+import java.util.ArrayList;
+import java.util.List;
+
+public class TutorialLevel extends InputAdapter implements Screen {
 
     private final Main main;
     private AnimationTest animationTest;
@@ -35,6 +37,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private final SpriteBatch batch;
 
     public final Obanana player;
+    List<Trigger> triggers = new ArrayList<>();
 
     private final Viewport gamePort;
     private ObananaInput inputManager;
@@ -47,7 +50,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private final World world;
     private final Box2DDebugRenderer box2DDebugRenderer;
 
-    public GameScreen(Main main) {
+    public TutorialLevel(Main main) {
         inputManager = new ObananaInput();
         Gdx.input.setInputProcessor(inputManager);
 
@@ -55,6 +58,10 @@ public class GameScreen extends InputAdapter implements Screen {
         tutorialTheme.setLooping(true);
 
         animationTest = new AnimationTest(main);
+
+        triggers.add(new Trigger(new Vector2(92.7f,14.5f), 3f, () -> {
+
+        }));
 
         this.camera = new OrthographicCamera();
         camera.position.set(0, 500f, 0);
@@ -101,26 +108,9 @@ public class GameScreen extends InputAdapter implements Screen {
             body.createFixture(fdef);
         }
 
-        for (MapObject object2 : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rectangle = ((RectangleMapObject) object2).getRectangle();
-
-            float x2 = (rectangle.getX() + rectangle.getWidth() / 2f) / Constans.PPM;
-            float y2 = (rectangle.getY() + rectangle.getHeight() / 2f) / Constans.PPM;
-            float halfWidth2 = rectangle.getWidth() / 2f / Constans.PPM;
-            float halfHeight2 = rectangle.getHeight() / 2f / Constans.PPM;
-
-            bdef2.type = BodyDef.BodyType.StaticBody;
-            bdef2.position.set(x2, y2);
-
-            body2 = world.createBody(bdef2);
-
-            shape2.setAsBox(halfWidth2, halfHeight2);
-            fdef2.shape = shape;
-            body2.createFixture(fdef2);
-        }
-
         this.main = main;
         this.player = new Obanana(world, main);
+
     }
 
     private void update() {
@@ -159,6 +149,10 @@ public class GameScreen extends InputAdapter implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             main.setScreen(new TitleScreen(main));
         }
+
+        for (Trigger t : triggers) {
+            t.update(player.b2body.getPosition());
+        }
     }
 
     private void cameraUpdate() {
@@ -183,7 +177,6 @@ public class GameScreen extends InputAdapter implements Screen {
         renderer.render();
 
         batch.begin();
-        animationTest.update(batch);
         player.update(delta);
         player.draw(batch);
         batch.end();
@@ -225,9 +218,5 @@ public class GameScreen extends InputAdapter implements Screen {
         world.dispose();
         batch.dispose();
         tutorialTheme.dispose();
-    }
-
-    public Obanana getPlayer() {
-        return this.player;
     }
 }

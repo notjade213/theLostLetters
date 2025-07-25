@@ -8,7 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import de.jade.screen.GameScreen;
+import de.jade.screen.TutorialLevel;
 
 
 public class Main extends Game implements Telegraph {
@@ -41,7 +41,7 @@ public class Main extends Game implements Telegraph {
         assetManager.finishLoading();
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        setScreen(new GameScreen(this));
+        setScreen(new TutorialLevel(this));
         //setScreen(new StartScreen(this));
     }
 

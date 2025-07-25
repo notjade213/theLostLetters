@@ -28,11 +28,14 @@ public class Assets {
         Texture.class);
 
     public static final AssetDescriptor<TextureAtlas> OBANANA = new AssetDescriptor<TextureAtlas>("sprites/characters" + File.separator + "ObamaSpriteSheet.atlas",
-    TextureAtlas.class);
+        TextureAtlas.class);
 
     public static final AssetDescriptor<Music> TUTORIAL_THEME = new AssetDescriptor<Music>("sfx" + File.separator + "TutorialTheme.mp3",
         Music.class);
 
     public static final AssetDescriptor<Music> MENU_THEME = new AssetDescriptor<Music>("sfx" + File.separator + "MenuTheme.mp3",
         Music.class);
+
+    public static final AssetDescriptor<TextureAtlas> DOOR = new AssetDescriptor<>("sprites/ui" + File.separator + "Door.atlas",
+        TextureAtlas.class);
 }
