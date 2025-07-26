@@ -8,8 +8,5 @@ public interface Key {
 
     public boolean unlocked();
 
-    public void description();
-
-    public void coolDown();
-
+    public void update();
 }

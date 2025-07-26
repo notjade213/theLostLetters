@@ -14,14 +14,11 @@ import de.jade.player.abilities.Attack;
 public class Obanana extends Sprite {
     public World world;
     public Body b2body;
-    private float velocityX;
-    private Attack attack;
+    private final Attack attack;
 
     private boolean obananaIsDead;
     private boolean obananaIsPitDead;
     private boolean runningRight;
-    private boolean touchingWall;
-
     private Animation obananaRun;
     private TextureRegion obananaDash;
     private TextureRegion obananaDeath;
@@ -121,7 +118,7 @@ public class Obanana extends Sprite {
                 attack.PunchAttack(player);
                 break;
             case "DASH":
-                player.b2body.setLinearVelocity(new Vector2(5f, 0));
+                player.b2body.applyLinearImpulse(new Vector2(5f, 0), b2body.getWorldCenter(), true);
                 break;
             default:
                 break;

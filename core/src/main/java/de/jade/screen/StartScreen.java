@@ -30,7 +30,7 @@ public class StartScreen implements Screen {
         style.fontColor = Color.WHITE;
         style.font = game.assetManager.get(Assets.HUD_FONT);
 
-        Label titleLabel = new Label("The Wild Gooners", style);
+        Label titleLabel = new Label("", style);
         titleLabel.setFontScale(5f);
         table.add(titleLabel).padBottom(60.0f).colspan(2).row();
 

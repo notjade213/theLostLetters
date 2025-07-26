@@ -21,8 +21,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import de.jade.Assets;
 import de.jade.Main;
 import de.jade.helper.Constans;
+import de.jade.helper.Door;
 import de.jade.helper.Trigger;
-import de.jade.player.AnimationTest;
 import de.jade.player.Obanana;
 import de.jade.player.ObananaInput;
 
@@ -32,7 +32,6 @@ import java.util.List;
 public class TutorialLevel extends InputAdapter implements Screen {
 
     private final Main main;
-    private AnimationTest animationTest;
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
 
@@ -59,8 +58,6 @@ public class TutorialLevel extends InputAdapter implements Screen {
 
         tutorialTheme = main.assetManager.get(Assets.TUTORIAL_THEME);
         tutorialTheme.setLooping(true);
-
-        animationTest = new AnimationTest(main);
 
         triggers.add(new Trigger(new Vector2(92.7f,14.5f), 3f, () -> {
             doorRange = true;
@@ -113,7 +110,7 @@ public class TutorialLevel extends InputAdapter implements Screen {
             body.createFixture(fdef);
         }
 
-        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle2 = ((RectangleMapObject) object).getRectangle();
 
 
@@ -204,7 +201,7 @@ public class TutorialLevel extends InputAdapter implements Screen {
             camera.position.set(camera.position.x, 11.533749f + 120f / Constans.PPM, 0f);
         }
 
-        cameraUpdate();
+        camera.update();
 
         renderer.setView(camera);
 
@@ -215,10 +212,6 @@ public class TutorialLevel extends InputAdapter implements Screen {
         for (Trigger t : triggers) {
             t.update(player.b2body.getPosition());
         }
-    }
-
-    private void cameraUpdate() {
-        camera.update();
     }
 
     @Override
@@ -245,8 +238,6 @@ public class TutorialLevel extends InputAdapter implements Screen {
         player.update(delta);
         player.draw(batch);
         batch.end();
-
-        cameraUpdate();
 
         box2DDebugRenderer.render(world, camera.combined);
     }

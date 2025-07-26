@@ -1,4 +1,4 @@
-package de.jade.screen;
+package de.jade.helper;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import de.jade.Assets;
 import de.jade.Main;
-import de.jade.helper.Constans;
 
 public class Door {
         private Animation openDoor;
