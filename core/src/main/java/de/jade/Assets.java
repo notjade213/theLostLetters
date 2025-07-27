@@ -38,4 +38,7 @@ public class Assets {
 
     public static final AssetDescriptor<TextureAtlas> DOOR = new AssetDescriptor<>("sprites/ui" + File.separator + "Door.atlas",
         TextureAtlas.class);
+
+    public static final AssetDescriptor<Music> JUNGLE_THEME = new AssetDescriptor<>("sfx" + File.separator + "JungleTheme.mp3",
+        Music.class);
 }

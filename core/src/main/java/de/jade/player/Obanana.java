@@ -9,12 +9,17 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import de.jade.Assets;
 import de.jade.Main;
+import de.jade.helper.ContactListener.MasterContactListener;
+import de.jade.helper.ContactListener.ObananaContactListener;
+import de.jade.helper.ContactListener.PitContactListener;
 import de.jade.player.abilities.Attack;
 
 public class Obanana extends Sprite {
     public World world;
     public Body b2body;
     private final Attack attack;
+    private MasterContactListener masterContactListener;
+    private ObananaContactListener obananaContactListener;
 
     private boolean obananaIsDead;
     private boolean obananaIsPitDead;
@@ -37,19 +42,27 @@ public class Obanana extends Sprite {
     public int lives = 3;
     public int damage = 50;
 
-    public Obanana(World world, Main main) {
+    public Obanana(World world, Main main, float positionX, float positionY) {
         this.world = world;
         this.attack = new Attack();
-        defineObanana(main);
+        defineObanana(main, positionX, positionY);
+
+        // Contact Listeners
+        obananaContactListener = new ObananaContactListener(main); // For isGrounded
+
+        masterContactListener = new MasterContactListener();
+        masterContactListener.addListener(obananaContactListener);
+        masterContactListener.addListener(new PitContactListener(this));
+        world.setContactListener(masterContactListener);
     }
 
-    public void defineObanana(Main main) {
+    public void defineObanana(Main main, float positionX, float positionY) {
         obananaIsDead = false;
         obananaIsPitDead = false;
 
         // Body
         BodyDef bdef = new BodyDef();
-        bdef.position.set(10f, 10f);
+        bdef.position.set(positionX, positionY);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
@@ -67,8 +80,8 @@ public class Obanana extends Sprite {
         feetDef.shape = feetShape;
         feetDef.friction = 1f;
 
-        b2body.createFixture(fdef);
-        b2body.createFixture(feetDef).setUserData("player");
+        b2body.createFixture(fdef).setUserData("player");
+        b2body.createFixture(feetDef).setUserData("feet");
 
         // Animations
         stateTimer = 0f;
@@ -132,6 +145,8 @@ public class Obanana extends Sprite {
         if(obananaIsPitDead) {
             pitDie();
         }
+
+        System.out.println(world.getContactCount());
     }
 
     public TextureRegion getFrame(float delta) {
@@ -201,6 +216,8 @@ public class Obanana extends Sprite {
         b2body.setLinearVelocity(0, 0);
         b2body.setTransform(10f, 11.5f,0);
         obananaIsPitDead = false;
+
+        // Reset lives
     }
 
     public void die() {
@@ -216,7 +233,7 @@ public class Obanana extends Sprite {
     }
 
     public void jump(){
-        if ( currentState != State.JUMP && b2body.getLinearVelocity().y >= -1.2 ) {
+        if (obananaContactListener.isGrounded()) {
             b2body.setLinearVelocity(b2body.getLinearVelocity().x, 0);
             b2body.applyLinearImpulse(new Vector2(0, 7f), b2body.getWorldCenter(), true);
             currentState = State.JUMP;
@@ -229,5 +246,9 @@ public class Obanana extends Sprite {
 
     public void setObananaIsPitDead(boolean value) {
             obananaIsPitDead = value;
+    }
+
+    public void createListeners(World world) {
+
     }
 }

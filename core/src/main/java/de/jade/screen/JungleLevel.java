@@ -1,6 +1,9 @@
 package de.jade.screen;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,12 +15,9 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-
 import com.badlogic.gdx.physics.box2d.*;
-
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
 import de.jade.Assets;
 import de.jade.Main;
 import de.jade.helper.Constans;
@@ -32,7 +32,7 @@ import de.jade.player.ObananaInput;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TutorialLevel extends InputAdapter implements Screen {
+public class JungleLevel extends InputAdapter implements Screen {
 
     private final Main main;
     private final OrthographicCamera camera;
@@ -44,9 +44,11 @@ public class TutorialLevel extends InputAdapter implements Screen {
     public final Obanana player;
     private List<Trigger> triggers = new ArrayList<>();
 
+    private final List<Body> movingPlatforms = new ArrayList<>();
+
     private final Viewport gamePort;
     private ObananaInput inputManager;
-    private Music tutorialTheme;
+    private Music jungleTheme;
 
     // Map
     private final TmxMapLoader maploader;
@@ -55,12 +57,22 @@ public class TutorialLevel extends InputAdapter implements Screen {
     private final World world;
     private final Box2DDebugRenderer box2DDebugRenderer;
 
-    public TutorialLevel(Main main) {
+    // Moving platform variables
+    private boolean goingUp = true;
+    private boolean goingSideWays = true;
+    private float speedY = 1f;
+    private float speedX = 1f;
+
+    private float minY1;
+    private float maxY1;
+
+
+    public JungleLevel(Main main) {
         inputManager = new ObananaInput();
         Gdx.input.setInputProcessor(inputManager);
 
-        tutorialTheme = main.assetManager.get(Assets.TUTORIAL_THEME);
-        tutorialTheme.setLooping(true);
+        jungleTheme = main.assetManager.get(Assets.JUNGLE_THEME);
+        jungleTheme.setLooping(true);
 
         triggers.add(new Trigger(new Vector2(92.7f,14.5f), 3f, () -> {
             doorRange = true;
@@ -77,7 +89,7 @@ public class TutorialLevel extends InputAdapter implements Screen {
         this.batch = new SpriteBatch();
 
         maploader = new TmxMapLoader();
-        map = maploader.load("maps/TutorialLevel/Tutorial.tmx");
+        map = maploader.load("maps/JungleLevel/Jungle..tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1f / Constans.PPM);
 
         // Box2D variables
@@ -93,6 +105,11 @@ public class TutorialLevel extends InputAdapter implements Screen {
         PolygonShape shape2 = new PolygonShape();
         FixtureDef fdef2 = new FixtureDef();
         Body body2;
+
+        BodyDef bdefPlatform = new BodyDef();
+        PolygonShape shapePlatform= new PolygonShape();
+        FixtureDef fdefPlatform = new FixtureDef();
+        Body platform;
 
         // Create ground, copy this for other types of bodies/fixtures
         for (MapObject object : map.getLayers().get(0).getObjects().getByType(RectangleMapObject.class)) {
@@ -134,8 +151,37 @@ public class TutorialLevel extends InputAdapter implements Screen {
             body2.createFixture(fixtureDef).setUserData("pit");
         }
 
+        for (MapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+
+            float x = (rectangle.getX() + rectangle.getWidth() / 2f) / Constans.PPM;
+            float y = (rectangle.getY() + rectangle.getHeight() / 2f) / Constans.PPM;
+            float halfWidth = rectangle.getWidth() / 2f / Constans.PPM;
+            float halfHeight = rectangle.getHeight() / 2f / Constans.PPM;
+
+            bdef.type = BodyDef.BodyType.KinematicBody;
+            bdef.position.set(x, y);
+
+            platform = world.createBody(bdef);
+
+            shape.setAsBox(halfWidth, halfHeight);
+            fdef.shape = shape;
+            platform.createFixture(fdef).setUserData("platform");
+
+            movingPlatforms.add(platform);
+        }
+
+        // Moving Platform variables
+        minY1 = movingPlatforms.get(0).getPosition().y;
+        maxY1 = movingPlatforms.get(0).getPosition().y + 4f;
+        movingPlatforms.get(0).setLinearVelocity(0, speedY);
+
+
+
         this.main = main;
-        this.player = new Obanana(world, main, 10f, 10f);
+        this.player = new Obanana(world, main, 107f, 3.5f);
+
+
 
         shape.dispose();
         shape2.dispose();
@@ -148,7 +194,7 @@ public class TutorialLevel extends InputAdapter implements Screen {
         ObananaInput.inputHandler(player);
 
         camera.position.x = player.b2body.getPosition().x;
-        camera.position.y = player.b2body.getPosition().y + 120f / Constans.PPM;
+        camera.position.y = player.b2body.getPosition().y;
 //        int speed = 10;
 //        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) camera.position.x -= speed * Gdx.graphics.getDeltaTime();
 //        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) camera.position.x += speed * Gdx.graphics.getDeltaTime();
@@ -159,16 +205,9 @@ public class TutorialLevel extends InputAdapter implements Screen {
 
 
         // Locks the camera when the player reaches the end
-        if (camera.position.x >= 90.37492 ) {
-            camera.position.set(90.37492f, camera.position.y, 0f);
-        }
-
-        // Locks the camera when the player falls off the map and locks the camera when the player jumps
-        if (camera.position.y <= 12.268947f) {
-            camera.position.set(camera.position.x,12.268947f, 0f);
-        } else if (camera.position.y > 11.533749f + 120f / Constans.PPM) {
-            camera.position.set(camera.position.x, 11.533749f + 120f / Constans.PPM, 0f);
-        }
+//        if (camera.position.x >= 90.37492 ) {
+//            camera.position.set(90.37492f, camera.position.y, 0f);
+//        }
 
         camera.update();
 
@@ -181,11 +220,21 @@ public class TutorialLevel extends InputAdapter implements Screen {
         for (Trigger t : triggers) {
             t.update(player.b2body.getPosition());
         }
+
+        // Moving Platforms
+        if(goingUp && movingPlatforms.get(0).getPosition().y >= maxY1) {
+            goingUp = false;
+            movingPlatforms.get(0).setLinearVelocity(0, -speedY);
+        } else if(!goingUp && movingPlatforms.get(0).getPosition().y <= minY1) {
+            goingUp = true;
+            movingPlatforms.get(0).setLinearVelocity(0, speedY);
+        }
+
     }
 
     @Override
     public void show() {
-        tutorialTheme.play();
+        jungleTheme.play();
         camera.setToOrtho(false);
     }
 
@@ -202,7 +251,7 @@ public class TutorialLevel extends InputAdapter implements Screen {
 
         batch.begin();
         if(doorRange) {
-            door.update(batch, new JungleLevel(main), player.b2body);
+            door.update(batch, new TitleScreen(main), player.b2body);
         }
         player.update(delta);
         player.draw(batch);
@@ -218,21 +267,21 @@ public class TutorialLevel extends InputAdapter implements Screen {
 
     @Override
     public void pause() {
-        if (tutorialTheme.isPlaying()) {
-            tutorialTheme.pause();
+        if (jungleTheme.isPlaying()) {
+            jungleTheme.pause();
         }
     }
 
     @Override
     public void resume() {
-        if (!tutorialTheme.isPlaying()) {
-            tutorialTheme.play();
+        if (!jungleTheme.isPlaying()) {
+            jungleTheme.play();
         }
     }
 
     @Override
     public void hide() {
-        tutorialTheme.stop();
+        jungleTheme.stop();
     }
 
     @Override
@@ -242,6 +291,6 @@ public class TutorialLevel extends InputAdapter implements Screen {
         box2DDebugRenderer.dispose();
         world.dispose();
         batch.dispose();
-        tutorialTheme.dispose();
+        jungleTheme.dispose();
     }
 }

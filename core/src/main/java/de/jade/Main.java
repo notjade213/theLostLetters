@@ -7,8 +7,9 @@ import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import de.jade.screen.TutorialLevel;
+import de.jade.helper.ContactListener.MasterContactListener;
+import de.jade.helper.ContactListener.ObananaContactListener;
+import de.jade.screen.JungleLevel;
 
 
 public class Main extends Game implements Telegraph {
@@ -19,7 +20,8 @@ public class Main extends Game implements Telegraph {
     public Batch batch;
 
     // Managers
-    public  AssetManager assetManager;
+    public AssetManager assetManager;
+    private MasterContactListener masterContactListener;
 
     // Misc
     public static OrthographicCamera camera;
@@ -39,10 +41,11 @@ public class Main extends Game implements Telegraph {
         assetManager.load(Assets.TUTORIAL_THEME);
         assetManager.load(Assets.MENU_THEME);
         assetManager.load(Assets.DOOR);
+        assetManager.load(Assets.JUNGLE_THEME);
         assetManager.finishLoading();
-        batch = new SpriteBatch();
+
         camera = new OrthographicCamera();
-        setScreen(new TutorialLevel(this));
+        setScreen(new JungleLevel(this));
         //setScreen(new StartScreen(this));
     }
 
